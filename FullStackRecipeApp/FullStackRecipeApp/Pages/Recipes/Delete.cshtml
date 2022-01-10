@@ -1,0 +1,34 @@
+﻿@page
+@model FullStackRecipeApp.Pages.Recipes.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Recipe</h4>
+    <hr />
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Recipe.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Recipe.Description)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Recipe.ID" />
+        <input type="submit" value="Delete"/> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
