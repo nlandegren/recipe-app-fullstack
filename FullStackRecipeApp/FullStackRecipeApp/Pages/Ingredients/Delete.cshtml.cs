@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
 
-namespace FullStackRecipeApp.Pages.Recipes
+namespace FullStackRecipeApp.Pages.Ingredients
 {
     public class DeleteModel : PageModel
     {
@@ -22,10 +22,8 @@ namespace FullStackRecipeApp.Pages.Recipes
         }
 
         public bool IsLoggedIn { get; set; }
-
-
         [BindProperty]
-        public Recipe Recipe { get; set; }
+        public Ingredient Ingredient { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -39,14 +37,9 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            Recipe = await database.Recipe.FirstOrDefaultAsync(m => m.ID == id);
+            Ingredient = await database.Ingredient.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (!accessControl.UserHasAccess(Recipe))
-            {
-                return StatusCode(401, "Oops! You do not have access to this page!");
-            }
-
-            if (Recipe == null)
+            if (Ingredient == null)
             {
                 return NotFound();
             }
@@ -65,16 +58,11 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            Recipe = await database.Recipe.FindAsync(id);
+            Ingredient = await database.Ingredient.FindAsync(id);
 
-            if (!accessControl.UserHasAccess(Recipe))
+            if (Ingredient != null)
             {
-                return StatusCode(401, "Oops! You do not have access to this page!");
-            }
-
-            if (Recipe != null)
-            {
-                database.Recipe.Remove(Recipe);
+                database.Ingredient.Remove(Ingredient);
                 await database.SaveChangesAsync();
             }
 

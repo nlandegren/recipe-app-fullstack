@@ -1,0 +1,27 @@
+﻿@page
+@model FullStackRecipeApp.Pages.UnitsOfMeasurement.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Måttenhet</h1>
+
+<div>
+    <hr />
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Unit.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unit.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (Model.IsLoggedIn)
+    {
+        <a asp-page="./Edit" asp-route-id="@Model.Unit.ID">Edit</a>
+    }
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,50 @@
+﻿@page
+@model FullStackRecipeApp.Pages.MealPlans.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Redigera matplanering</h1>
+
+
+<hr />
+<div >
+    <div >
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" ></div>
+            <input type="hidden" asp-for="MealPlan.ID" />
+            
+            <div>
+                <label asp-for="MealPlan.Name">Namn </label>
+                <input asp-for="MealPlan.Name"/>
+                <span asp-validation-for="MealPlan.Name"></span>
+            </div>
+            <div>
+                <label asp-for="MealPlan.WeekNumber">Vecka: </label>
+                <input asp-for="MealPlan.WeekNumber"/>
+                <span asp-validation-for="MealPlan.WeekNumber"></span>
+            </div>
+            <div>
+                <label asp-for="MealPlan.Meals[0].WeekDay">Välj dag</label>
+                <select name="WeekDay" asp-items="Html.GetEnumSelectList<Models.WeekDay>()"></select>
+            </div>
+            <div>
+                <label asp-for="MealPlan.Meals[0].RecipeID">Välj recept</label>
+                <select name="RecipeID" asp-items="Model.Options"></select>
+            </div>
+
+            <div>
+                <input type="submit" value="Spara planering"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Tillbaka till planeringar-listan</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
 
-namespace FullStackRecipeApp.Pages.Recipes
+namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
 {
     public class DeleteModel : PageModel
     {
@@ -20,12 +20,11 @@ namespace FullStackRecipeApp.Pages.Recipes
             database = context;
             this.accessControl = accessControl;
         }
-
         public bool IsLoggedIn { get; set; }
 
 
         [BindProperty]
-        public Recipe Recipe { get; set; }
+        public Unit Unit { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -39,14 +38,9 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            Recipe = await database.Recipe.FirstOrDefaultAsync(m => m.ID == id);
+            Unit = await database.Unit.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (!accessControl.UserHasAccess(Recipe))
-            {
-                return StatusCode(401, "Oops! You do not have access to this page!");
-            }
-
-            if (Recipe == null)
+            if (Unit == null)
             {
                 return NotFound();
             }
@@ -65,16 +59,11 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            Recipe = await database.Recipe.FindAsync(id);
+            Unit = await database.Unit.FindAsync(id);
 
-            if (!accessControl.UserHasAccess(Recipe))
+            if (Unit != null)
             {
-                return StatusCode(401, "Oops! You do not have access to this page!");
-            }
-
-            if (Recipe != null)
-            {
-                database.Recipe.Remove(Recipe);
+                database.Unit.Remove(Unit);
                 await database.SaveChangesAsync();
             }
 

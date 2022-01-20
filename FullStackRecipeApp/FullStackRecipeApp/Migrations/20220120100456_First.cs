@@ -53,11 +53,26 @@ namespace FullStackRecipeApp.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DietCategory = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ingredient", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MealPlan",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WeekNumber = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealPlan", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,20 +86,6 @@ namespace FullStackRecipeApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Measurement", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Recipe",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Recipe", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -194,45 +195,25 @@ namespace FullStackRecipeApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IngredientRecipe",
+                name: "Recipe",
                 columns: table => new
                 {
-                    IngredientsID = table.Column<int>(type: "int", nullable: false),
-                    RecipesID = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Instructions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MealCategory = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngredientRecipe", x => new { x.IngredientsID, x.RecipesID });
+                    table.PrimaryKey("PK_Recipe", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_IngredientRecipe_Ingredient_IngredientsID",
-                        column: x => x.IngredientsID,
-                        principalTable: "Ingredient",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_IngredientRecipe_Recipe_RecipesID",
-                        column: x => x.RecipesID,
-                        principalTable: "Recipe",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Instruction",
-                columns: table => new
-                {
-                    StepNumber = table.Column<int>(type: "int", nullable: false),
-                    RecipeID = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Instruction", x => new { x.StepNumber, x.RecipeID });
-                    table.ForeignKey(
-                        name: "FK_Instruction_Recipe_RecipeID",
-                        column: x => x.RecipeID,
-                        principalTable: "Recipe",
-                        principalColumn: "ID",
+                        name: "FK_Recipe_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -240,35 +221,59 @@ namespace FullStackRecipeApp.Migrations
                 name: "Quantity",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StepNumber = table.Column<int>(type: "int", nullable: false),
+                    IngredientID = table.Column<int>(type: "int", nullable: false),
                     RecipeID = table.Column<int>(type: "int", nullable: false),
-                    IngredientID = table.Column<int>(type: "int", nullable: true),
-                    MeasurementID = table.Column<int>(type: "int", nullable: true),
+                    MeasurementID = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Quantity", x => x.ID);
+                    table.PrimaryKey("PK_Quantity", x => new { x.IngredientID, x.RecipeID });
                     table.ForeignKey(
                         name: "FK_Quantity_Ingredient_IngredientID",
                         column: x => x.IngredientID,
                         principalTable: "Ingredient",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Quantity_Instruction_StepNumber_RecipeID",
-                        columns: x => new { x.StepNumber, x.RecipeID },
-                        principalTable: "Instruction",
-                        principalColumns: new[] { "StepNumber", "RecipeID" },
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Quantity_Measurement_MeasurementID",
                         column: x => x.MeasurementID,
                         principalTable: "Measurement",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Quantity_Recipe_RecipeID",
+                        column: x => x.RecipeID,
+                        principalTable: "Recipe",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecipeMealPlan",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecipeID = table.Column<int>(type: "int", nullable: false),
+                    MealPlanID = table.Column<int>(type: "int", nullable: false),
+                    WeekDay = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeMealPlan", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_RecipeMealPlan_MealPlan_MealPlanID",
+                        column: x => x.MealPlanID,
+                        principalTable: "MealPlan",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeMealPlan_Recipe_RecipeID",
+                        column: x => x.RecipeID,
+                        principalTable: "Recipe",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -311,19 +316,10 @@ namespace FullStackRecipeApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientRecipe_RecipesID",
-                table: "IngredientRecipe",
-                column: "RecipesID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Instruction_RecipeID",
-                table: "Instruction",
-                column: "RecipeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Quantity_IngredientID",
+                name: "IX_Quantity_IngredientID_RecipeID",
                 table: "Quantity",
-                column: "IngredientID");
+                columns: new[] { "IngredientID", "RecipeID" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quantity_MeasurementID",
@@ -331,9 +327,24 @@ namespace FullStackRecipeApp.Migrations
                 column: "MeasurementID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Quantity_StepNumber_RecipeID",
+                name: "IX_Quantity_RecipeID",
                 table: "Quantity",
-                columns: new[] { "StepNumber", "RecipeID" });
+                column: "RecipeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipe_UserID",
+                table: "Recipe",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeMealPlan_MealPlanID",
+                table: "RecipeMealPlan",
+                column: "MealPlanID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeMealPlan_RecipeID",
+                table: "RecipeMealPlan",
+                column: "RecipeID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -354,28 +365,28 @@ namespace FullStackRecipeApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "IngredientRecipe");
+                name: "Quantity");
 
             migrationBuilder.DropTable(
-                name: "Quantity");
+                name: "RecipeMealPlan");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Ingredient");
-
-            migrationBuilder.DropTable(
-                name: "Instruction");
 
             migrationBuilder.DropTable(
                 name: "Measurement");
 
             migrationBuilder.DropTable(
+                name: "MealPlan");
+
+            migrationBuilder.DropTable(
                 name: "Recipe");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

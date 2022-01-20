@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FullStackRecipeApp.Migrations
 {
     [DbContext(typeof(RecipeDbContext))]
-    [Migration("20220110132101_First")]
+    [Migration("20220120100456_First")]
     partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace FullStackRecipeApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("FullStackRecipeApp.Models.Ingredient", b =>
@@ -29,6 +29,9 @@ namespace FullStackRecipeApp.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DietCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -41,26 +44,111 @@ namespace FullStackRecipeApp.Migrations
                     b.ToTable("Ingredient");
                 });
 
-            modelBuilder.Entity("FullStackRecipeApp.Models.Instruction", b =>
+            modelBuilder.Entity("FullStackRecipeApp.Models.MealPlan", b =>
                 {
-                    b.Property<int>("StepNumber")
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WeekNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("MealPlan");
+                });
+
+            modelBuilder.Entity("FullStackRecipeApp.Models.Quantity", b =>
+                {
+                    b.Property<int>("IngredientID")
                         .HasColumnType("int");
 
                     b.Property<int>("RecipeID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
-                    b.HasKey("StepNumber", "RecipeID");
+                    b.Property<int>("MeasurementID")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientID", "RecipeID");
+
+                    b.HasIndex("MeasurementID");
 
                     b.HasIndex("RecipeID");
 
-                    b.ToTable("Instruction");
+                    b.HasIndex("IngredientID", "RecipeID")
+                        .IsUnique();
+
+                    b.ToTable("Quantity");
                 });
 
-            modelBuilder.Entity("FullStackRecipeApp.Models.Measurement", b =>
+            modelBuilder.Entity("FullStackRecipeApp.Models.Recipe", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instructions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MealCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Recipe");
+                });
+
+            modelBuilder.Entity("FullStackRecipeApp.Models.RecipeMealPlan", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("MealPlanID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WeekDay")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MealPlanID");
+
+                    b.HasIndex("RecipeID");
+
+                    b.ToTable("RecipeMealPlan");
+                });
+
+            modelBuilder.Entity("FullStackRecipeApp.Models.Unit", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -74,74 +162,6 @@ namespace FullStackRecipeApp.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Measurement");
-                });
-
-            modelBuilder.Entity("FullStackRecipeApp.Models.Quantity", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("IngredientID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MeasurementID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StepNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("IngredientID");
-
-                    b.HasIndex("MeasurementID");
-
-                    b.HasIndex("StepNumber", "RecipeID");
-
-                    b.ToTable("Quantity");
-                });
-
-            modelBuilder.Entity("FullStackRecipeApp.Models.Recipe", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Recipe");
-                });
-
-            modelBuilder.Entity("IngredientRecipe", b =>
-                {
-                    b.Property<int>("IngredientsID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipesID")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientsID", "RecipesID");
-
-                    b.HasIndex("RecipesID");
-
-                    b.ToTable("IngredientRecipe");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -344,51 +364,61 @@ namespace FullStackRecipeApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FullStackRecipeApp.Models.Instruction", b =>
-                {
-                    b.HasOne("FullStackRecipeApp.Models.Recipe", null)
-                        .WithMany("Instructions")
-                        .HasForeignKey("RecipeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("FullStackRecipeApp.Models.Quantity", b =>
                 {
                     b.HasOne("FullStackRecipeApp.Models.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientID");
+                        .WithMany("Quantities")
+                        .HasForeignKey("IngredientID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("FullStackRecipeApp.Models.Measurement", "Measurement")
+                    b.HasOne("FullStackRecipeApp.Models.Unit", "Measurement")
                         .WithMany()
-                        .HasForeignKey("MeasurementID");
+                        .HasForeignKey("MeasurementID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("FullStackRecipeApp.Models.Instruction", "Instruction")
-                        .WithMany()
-                        .HasForeignKey("StepNumber", "RecipeID")
+                    b.HasOne("FullStackRecipeApp.Models.Recipe", "Recipe")
+                        .WithMany("Quantities")
+                        .HasForeignKey("RecipeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Ingredient");
 
-                    b.Navigation("Instruction");
-
                     b.Navigation("Measurement");
+
+                    b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("IngredientRecipe", b =>
+            modelBuilder.Entity("FullStackRecipeApp.Models.Recipe", b =>
                 {
-                    b.HasOne("FullStackRecipeApp.Models.Ingredient", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("IngredientsID")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FullStackRecipeApp.Models.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesID")
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FullStackRecipeApp.Models.RecipeMealPlan", b =>
+                {
+                    b.HasOne("FullStackRecipeApp.Models.MealPlan", "MealPlan")
+                        .WithMany("Meals")
+                        .HasForeignKey("MealPlanID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("FullStackRecipeApp.Models.Recipe", "Recipe")
+                        .WithMany("Meals")
+                        .HasForeignKey("RecipeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MealPlan");
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -442,9 +472,21 @@ namespace FullStackRecipeApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FullStackRecipeApp.Models.Ingredient", b =>
+                {
+                    b.Navigation("Quantities");
+                });
+
+            modelBuilder.Entity("FullStackRecipeApp.Models.MealPlan", b =>
+                {
+                    b.Navigation("Meals");
+                });
+
             modelBuilder.Entity("FullStackRecipeApp.Models.Recipe", b =>
                 {
-                    b.Navigation("Instructions");
+                    b.Navigation("Meals");
+
+                    b.Navigation("Quantities");
                 });
 #pragma warning restore 612, 618
         }

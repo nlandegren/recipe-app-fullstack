@@ -17,13 +17,29 @@ namespace FullStackRecipeApp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Instruction>().HasKey(i => new { i.StepNumber, i.RecipeID });
+            builder.Entity<Quantity>()
+                .HasKey(i => new { i.IngredientID, i.RecipeID });
+            
+            builder.Entity<Recipe>()
+                .Property(r => r.MealCategory)
+                .HasConversion<string>();
+
+            builder.Entity<Ingredient>()
+                .Property(i => i.DietCategory)
+                .HasConversion<string>();
+
+            builder.Entity<RecipeMealPlan>()
+                .Property(i => i.WeekDay)
+                .HasConversion<string>();
         }
 
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<Ingredient> Ingredient { get; set; }
-        public DbSet<Instruction> Instruction { get; set; }
-        public DbSet<Measurement> Measurement { get; set; }
+        public DbSet<Unit> Unit { get; set; }
         public DbSet<Quantity> Quantity { get; set; }
+        public DbSet<MealPlan> MealPlan { get; set; }
+        public DbSet<RecipeMealPlan> RecipeMealPlan { get; set; }
+
+
     }
 }

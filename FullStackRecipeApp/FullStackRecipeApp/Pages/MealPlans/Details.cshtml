@@ -1,0 +1,31 @@
+﻿@page
+@model FullStackRecipeApp.Pages.MealPlans.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.MealPlan.Name | Vecka @Model.MealPlan.WeekNumber</h1>
+
+<div>
+    <hr />
+    @foreach (var meal in Model.MealPlan.Meals)
+    {
+
+        <dl>
+            <dt>
+                @meal.WeekDay
+            </dt>
+            <dd>
+                <a asp-page="../Recipes/Details"  asp-route-id="@meal.RecipeID">@meal.Recipe.Name</a>    
+            </dd>
+        </dl>
+    }
+</div>
+<div>
+    @if (Model.IsLoggedIn)
+    {
+        <a asp-page="./Edit" asp-route-id="@Model.MealPlan.ID">Redigera</a>
+    }
+    <a asp-page="./Index">Tillbaka till planeringar-listan</a>
+</div>

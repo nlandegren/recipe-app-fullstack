@@ -1,0 +1,44 @@
+﻿@page
+@model FullStackRecipeApp.Pages.Ingredients.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Skapa ny ingrediens</h1>
+
+<h2>Ingredient</h2>
+<hr />
+<div>
+    <div>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div>
+                <label asp-for="Ingredient.Name" class="control-label"></label>
+                <input asp-for="Ingredient.Name" class="form-control" />
+                <span asp-validation-for="Ingredient.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ingredient.FoodCategory"></label>
+                <input asp-for="Ingredient.FoodCategory"/>
+                <span asp-validation-for="Ingredient.FoodCategory"></span>
+            </div>
+            <div>
+                <label asp-for="Ingredient.DietCategory"></label>
+                <input asp-for="Ingredient.DietCategory"/>
+                <span asp-validation-for="Ingredient.DietCategory"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

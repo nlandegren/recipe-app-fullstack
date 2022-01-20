@@ -5,6 +5,13 @@
 }
 
 <h1>Welcome</h1>
+@if (Model.accessControl.IsLoggedIn())
+{
+    <a asp-page="./AddSampleData">Lägg till exempeldata (ingredienser, recept, matplaneringar)</a>
+}
 
-<a asp-page="./Recipes/Index">See Recipes</a>
- 
+<a asp-page="./Recipes/Index">Recept</a>
+<a asp-page="./Ingredients/Index">Ingredienser</a>
+<a asp-page="./MealPlans/Index">Planeringar</a>
+<a asp-page="./UnitsOfMeasurement/Index">Måttenheter</a>
+

@@ -5,27 +5,36 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Html.DisplayFor(model => model.Recipe.Name)</h1>
+
+<h2>@Html.DisplayFor(model => model.Recipe.Description)</h2>
 
 <div>
-    <h4>Recipe</h4>
-    <hr />
-    <dl>
-        <dt>
-            @Html.DisplayNameFor(model => model.Recipe.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Recipe.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Recipe.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Recipe.Description)
-        </dd>
-    </dl>
+    <h2>Ingredienser</h2>
+    <ul>
+        @foreach (var quantity in Model.Quantities)
+        {
+
+            <li>
+                @Html.DisplayFor(modelItem => quantity.Ingredient.Name)
+
+                @Html.DisplayFor(modelItem => quantity.Amount)
+
+                @Html.DisplayFor(modelItem => quantity.Measurement.Name)
+            </li>
+        }
+    </ul>
 </div>
+
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Recipe.ID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <h2>Instruktioner</h2>
+    <h3>@Html.DisplayFor(modelItem => Model.Recipe.Instructions)</h3>
+</div>
+
+<div>
+    @if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(Model.Recipe))
+    {
+        <a asp-page="./Edit" asp-route-id="@Model.Recipe.ID">Redigera receptet</a>
+    }
+    <a asp-page="./Index">Back to Recipes</a>
 </div>

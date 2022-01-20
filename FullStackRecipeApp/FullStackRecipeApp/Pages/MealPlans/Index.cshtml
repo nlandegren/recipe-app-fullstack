@@ -1,15 +1,17 @@
 ﻿@page
-@model FullStackRecipeApp.Pages.Recipes.IndexModel
+@model FullStackRecipeApp.Pages.MealPlans.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Recept</h1>
+<h1>Index</h1>
 
-@if (Model.AccessControl.IsLoggedIn())
+@if (Model.IsLoggedIn)
 {
-    <a asp-page="Create">Skapa nytt recept</a>
+    <p>
+        <a asp-page="Create">Skapa ny planering</a>
+    </p>
 }
 
 
@@ -23,8 +25,6 @@
                         <option value="" disabled selected>Välj sortering</option>
                     </select>
                 </td>
-            </tr>
-            <tr>
                 <th><label for="FilterKey">Filtrera efter kategori</label></th>
                 <td>
                     <select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()">
@@ -36,38 +36,46 @@
     </table>
     <button type="submit">Sök</button>
 </form>
-<table>
+
+<table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Recipes[0].Name)
+                @Html.DisplayNameFor(model => model.MealPlans[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Recipes[0].Description)
+                @Html.DisplayNameFor(model => model.MealPlans[0].WeekNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Recipes[0].MealCategory)
+                Antal recept
+            </th>
+            <th>
+                Användare
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var recipe in Model.Recipes)
+        @foreach (var plan in Model.MealPlans)
         {
         <tr>
+
             <td>
-                <a asp-page="./Details" asp-route-id="@recipe.ID">@Html.DisplayFor(modelItem => recipe.Name)</a>
+                <a asp-page="./Details" asp-route-id="@plan.ID">@plan.Name</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => recipe.Description)
+                @plan.WeekNumber
             </td>
             <td>
-                @Html.DisplayFor(modelItem => recipe.MealCategory)
+                @plan.Meals.Count()
             </td>
-            @if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(recipe))
+            <td>
+                (användarnamn här)
+            </td>
+            @if (Model.IsLoggedIn)
             {
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@recipe.ID">Redigera</a> |
-                    <a asp-page="./Delete" asp-route-id="@recipe.ID">Ta bort</a>
+                    <a asp-page="./Edit" asp-route-id="@plan.ID">Redigera</a> |
+                    <a asp-page="./Delete" asp-route-id="@plan.ID">Ta bort</a>
                 </td>
             }
         </tr>

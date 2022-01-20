@@ -1,0 +1,39 @@
+﻿@page
+@model FullStackRecipeApp.Pages.MealPlans.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h1>Skapa en veckomatsedel</h1>
+<hr />
+
+<div>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label asp-for="MealPlan.WeekNumber">Veckonummer: </label>
+            <input asp-for="MealPlan.WeekNumber" />
+            <span asp-validation-for="MealPlan.WeekNumber"></span>
+        </div>
+        <div>
+            <label asp-for="MealPlan.Name">Namn: </label>
+            <input asp-for="MealPlan.Name" />
+            <span asp-validation-for="MealPlan.Name"></span>
+        </div>
+        <div>
+            <input type="submit" value="Skapa planering" />
+        </div>
+    </form>
+</div>
+
+
+<div>
+    <a asp-page="Index">Tillbaka till planeringar-listan</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

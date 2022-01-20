@@ -1,0 +1,44 @@
+﻿@page
+@model FullStackRecipeApp.Pages.Ingredients.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Redigera ingrediens</h1>
+
+<hr />
+<div>
+    <div>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Ingredient.ID" />
+            <div>
+                <label asp-for="Ingredient.Name"></label>
+                <input asp-for="Ingredient.Name"/>
+                <span asp-validation-for="Ingredient.Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ingredient.FoodCategory"></label>
+                <input asp-for="Ingredient.FoodCategory" />
+                <span asp-validation-for="Ingredient.FoodCategory"></span>
+            </div>
+            <div>
+                <label asp-for="Ingredient.DietCategory"></label>
+                <input asp-for="Ingredient.DietCategory" />
+                <span asp-validation-for="Ingredient.DietCategory"></span>
+            </div>
+            <div>
+                <input type="submit" value="Spara"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

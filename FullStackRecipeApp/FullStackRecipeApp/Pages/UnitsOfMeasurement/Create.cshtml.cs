@@ -7,25 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
-namespace FullStackRecipeApp.Pages.Recipes
+namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
 {
-    public enum MealCategory
-    {
-        [Display(Name = "Frukost")]
-        Breakfast,
-        [Display(Name = "Brunch")]
-        Brunch,
-        [Display(Name = "Lunch")]
-        Lunch,
-        [Display(Name = "Middag")]
-        Dinner,
-        [Display(Name = "Annan")]
-        Other
-    }
     public class CreateModel : PageModel
     {
         private readonly RecipeDbContext database;
@@ -36,11 +20,7 @@ namespace FullStackRecipeApp.Pages.Recipes
             database = context;
             this.accessControl = accessControl;
         }
-
         public bool IsLoggedIn { get; set; }
-
-        [BindProperty]
-        public Recipe Recipe { get; set; }
 
         public IActionResult OnGet()
         {
@@ -52,6 +32,9 @@ namespace FullStackRecipeApp.Pages.Recipes
             return Page();
         }
 
+        [BindProperty]
+        public Unit Unit { get; set; }
+
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
@@ -60,19 +43,15 @@ namespace FullStackRecipeApp.Pages.Recipes
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
-            Recipe.UserID = accessControl.LoggedInUserID;
-            // Because UserID was added after model state evaluation, we need to remove error associated with it. This might cause problems if there are other errors.
-            ModelState.Remove("Recipe.UserID");
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            database.Recipe.Add(Recipe);
-            
+            database.Unit.Add(Unit);
             await database.SaveChangesAsync();
 
-            return RedirectToPage("./Edit", new { id = Recipe.ID});
+            return RedirectToPage("./Index");
         }
     }
 }

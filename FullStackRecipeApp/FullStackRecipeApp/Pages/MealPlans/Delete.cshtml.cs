@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
 
-namespace FullStackRecipeApp.Pages.Recipes
+namespace FullStackRecipeApp.Pages.MealPlans
 {
     public class DeleteModel : PageModel
     {
@@ -20,12 +20,10 @@ namespace FullStackRecipeApp.Pages.Recipes
             database = context;
             this.accessControl = accessControl;
         }
-
         public bool IsLoggedIn { get; set; }
 
-
         [BindProperty]
-        public Recipe Recipe { get; set; }
+        public MealPlan MealPlan { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -39,14 +37,9 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            Recipe = await database.Recipe.FirstOrDefaultAsync(m => m.ID == id);
+            MealPlan = await database.MealPlan.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (!accessControl.UserHasAccess(Recipe))
-            {
-                return StatusCode(401, "Oops! You do not have access to this page!");
-            }
-
-            if (Recipe == null)
+            if (MealPlan == null)
             {
                 return NotFound();
             }
@@ -65,16 +58,11 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            Recipe = await database.Recipe.FindAsync(id);
+            MealPlan = await database.MealPlan.FindAsync(id);
 
-            if (!accessControl.UserHasAccess(Recipe))
+            if (MealPlan != null)
             {
-                return StatusCode(401, "Oops! You do not have access to this page!");
-            }
-
-            if (Recipe != null)
-            {
-                database.Recipe.Remove(Recipe);
+                database.MealPlan.Remove(MealPlan);
                 await database.SaveChangesAsync();
             }
 

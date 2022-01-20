@@ -8,35 +8,31 @@ using Microsoft.EntityFrameworkCore;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
 
-namespace FullStackRecipeApp.Pages.Recipes
+namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
 {
     public class DetailsModel : PageModel
     {
         private readonly RecipeDbContext database;
-        public AccessControl AccessControl;
+        private readonly AccessControl accessControl;
 
         public DetailsModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.AccessControl = accessControl;
+            this.accessControl = accessControl;
         }
-        public Recipe Recipe { get; set; }
-        public IList<Quantity> Quantities { get; set; }
+        public bool IsLoggedIn { get; set; }
+        public Unit Unit { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
-        {           
+        {
             if (id == null)
             {
                 return NotFound();
             }
-            Recipe = await database.Recipe.FirstOrDefaultAsync(m => m.ID == id);
-            Quantities = await database.Quantity
-                .Include(q => q.Ingredient)
-                .Include(q => q.Measurement)
-                .Where(q => q.Recipe == Recipe)
-                .ToListAsync();
 
-            if (Recipe == null)
+            Unit = await database.Unit.FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Unit == null)
             {
                 return NotFound();
             }
