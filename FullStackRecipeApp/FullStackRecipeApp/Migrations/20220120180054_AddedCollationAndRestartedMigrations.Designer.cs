@@ -10,13 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FullStackRecipeApp.Migrations
 {
     [DbContext(typeof(RecipeDbContext))]
-    [Migration("20220120100456_First")]
-    partial class First
+    [Migration("20220120180054_AddedCollationAndRestartedMigrations")]
+    partial class AddedCollationAndRestartedMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Relational:Collation", "Finnish_Swedish_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -28,10 +29,11 @@ namespace FullStackRecipeApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
+                    b.Property<string>("DietCategory")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DietCategory")
+                    b.Property<string>("FoodCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -161,7 +163,7 @@ namespace FullStackRecipeApp.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Measurement");
+                    b.ToTable("Unit");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

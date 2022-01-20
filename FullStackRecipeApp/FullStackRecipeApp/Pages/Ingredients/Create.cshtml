@@ -5,38 +5,40 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Skapa ny ingrediens</h1>
 
-<h2>Ingredient</h2>
+<h1 class="page-headers">Skapa ny ingrediens</h1>
+
 <hr />
 <div>
     <div>
-        <form method="post">
+        <form id="post-form" method="post">
             <div asp-validation-summary="ModelOnly"></div>
             <div>
-                <label asp-for="Ingredient.Name" class="control-label"></label>
-                <input asp-for="Ingredient.Name" class="form-control" />
-                <span asp-validation-for="Ingredient.Name" class="text-danger"></span>
+                <label asp-for="Ingredient.Name"></label>
+                <input asp-for="Ingredient.Name" />
+                <span asp-validation-for="Ingredient.Name"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Ingredient.FoodCategory"></label>
-                <input asp-for="Ingredient.FoodCategory"/>
+            <div>
+                <label asp-for="Ingredient.FoodCategory">Matkategori: </label>
+                <input asp-for="Ingredient.FoodCategory" />
                 <span asp-validation-for="Ingredient.FoodCategory"></span>
             </div>
             <div>
-                <label asp-for="Ingredient.DietCategory"></label>
-                <input asp-for="Ingredient.DietCategory"/>
-                <span asp-validation-for="Ingredient.DietCategory"></span>
+                <label asp-for="Ingredient.DietCategory">Dietkategori: </label>
+                <select asp-for="Ingredient.DietCategory" asp-items="Html.GetEnumSelectList<Models.DietCategory>()">
+                    <option value="" disabled selected>Välj kategori</option>
+                </select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div>
+                <input type="submit" value="Skapa" />
             </div>
+            <div asp-validation-summary="All"> </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">Tillbaka till alla ingredienser</a>
 </div>
 
 @section Scripts {

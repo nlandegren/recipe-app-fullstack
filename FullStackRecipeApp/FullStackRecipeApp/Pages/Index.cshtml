@@ -4,14 +4,31 @@
     ViewData["Title"] = "Home page";
 }
 
-<h1>Welcome</h1>
+
+
+<div class="frontpage-section">
+    <a asp-page="./Recipes/Index">Recept</a>
+</div>
+
+<div class="frontpage-section">
+    <a asp-page="./Ingredients/Index">Ingredienser</a>
+</div>
+
+<div class="frontpage-section">
+    <a asp-page="./MealPlans/Index">Planeringar</a>
+</div>
+
+<div class="frontpage-section">
+    <a asp-page="./UnitsOfMeasurement/Index">Måttenheter</a>
+</div>
+
 @if (Model.accessControl.IsLoggedIn())
 {
-    <a asp-page="./AddSampleData">Lägg till exempeldata (ingredienser, recept, matplaneringar)</a>
+    <div class="frontpage-section">
+        <a asp-page="./AddSampleData">Lägg till exempeldata (OBS tar bort all data)</a>
+    </div>
 }
 
-<a asp-page="./Recipes/Index">Recept</a>
-<a asp-page="./Ingredients/Index">Ingredienser</a>
-<a asp-page="./MealPlans/Index">Planeringar</a>
-<a asp-page="./UnitsOfMeasurement/Index">Måttenheter</a>
+
+
 

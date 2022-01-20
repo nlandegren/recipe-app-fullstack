@@ -21,34 +21,32 @@
 ### Basic CRUD operations
 
 * Recipes 
-    * ~~List
+    * ~~List~~
     * Create
-        ~~* Temporary solution
-        * Add ingredient html dynamically to recipe
-        * Redirect to edit page to add ingredients
-        * Validation
-    * ~~Delete [X]
-CONTINUE HERE
-    * Edit 
-        * Edit/add ingredients
-        * Validation
-    * ~~Details
-    * ~~Filter by category
-        * Fix placeholder in drop down
-    * ~~Sort by number of ingredients
-        * Fix placeholder in drop down
+        * ~~Redirect to edit page to add ingredients~~
+        * ~~Validation messages~~
+        * Proper validation (data annotations on model)
+    * ~~Delete~~
+    * Edit         
+        * Edit/add/delete for each ingredient ingredients all ingredients
+        * Proper validation (data annotations on model)
+    * ~~Details~~
+    * ~~Filter by meal category~~
+        * ~~Fix placeholder in drop down~~
+    * ~~Sort by number of ingredients~~
+        * ~~Fix placeholder in drop down~~
 
 * Ingredients
-    * ~~List
-    * ~~Create (add more fields?)
-        * Change description to food category
+    * ~~List~~
+    * ~~Create~~
+        * ~~Change description to food category~~
         * Make dietcategory drop down
-    * ~~Delete
-    * ~~Edit
-    * ~~Details
-    * ~~Filter by diet
-        * Fix placeholder in drop down
-    * ~~Sort by name or popularity
+    * ~~Delete~~
+    * ~~Edit~~
+    * ~~Details~~
+    * ~~Filter by diet~~
+        * ~~Fix placeholder in drop down~~
+    * ~~Sort by name or popularity~~
         * Fix placeholder in drop down
         * probably fix LINQ expression
 
@@ -118,8 +116,10 @@ Lösningsförslag 4. På sidan för skapa nytt recept har jag två formulär: et
 
 * Javascript för bättre formulär
 * Att lägga till userID i alla tabeller skapar "multiple cascade delete paths"
+* Jag kan ta bort ingredienser och de tas bort från sina recept, problem?
 * Är min lösning med att ta bort felmeddelnade från modelstate efter model binding ok ?
 * Hur få tag i användarnamn för ett recept
 * Måste jag ha CRUD operationer för måttenheter och join-tabeller?
 * Bör jag också kolla inloggningstatus i post-handlers?
+
 * Går det bra att jag skippar exempeldata på matplanering? Det är omständigt

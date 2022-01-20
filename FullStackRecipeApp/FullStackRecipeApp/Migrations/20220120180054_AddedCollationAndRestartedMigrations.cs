@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FullStackRecipeApp.Migrations
 {
-    public partial class First : Migration
+    public partial class AddedCollationAndRestartedMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,7 +53,7 @@ namespace FullStackRecipeApp.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FoodCategory = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DietCategory = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -76,7 +76,7 @@ namespace FullStackRecipeApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Measurement",
+                name: "Unit",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -85,7 +85,7 @@ namespace FullStackRecipeApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Measurement", x => x.ID);
+                    table.PrimaryKey("PK_Unit", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,15 +236,15 @@ namespace FullStackRecipeApp.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Quantity_Measurement_MeasurementID",
-                        column: x => x.MeasurementID,
-                        principalTable: "Measurement",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Quantity_Recipe_RecipeID",
                         column: x => x.RecipeID,
                         principalTable: "Recipe",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Quantity_Unit_MeasurementID",
+                        column: x => x.MeasurementID,
+                        principalTable: "Unit",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -377,7 +377,7 @@ namespace FullStackRecipeApp.Migrations
                 name: "Ingredient");
 
             migrationBuilder.DropTable(
-                name: "Measurement");
+                name: "Unit");
 
             migrationBuilder.DropTable(
                 name: "MealPlan");

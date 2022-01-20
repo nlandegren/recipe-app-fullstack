@@ -5,38 +5,50 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Recept</h1>
+
 
 @if (Model.AccessControl.IsLoggedIn())
 {
-    <a asp-page="Create">Skapa nytt recept</a>
+    <div class="frontpage-section">
+        <a asp-page="Create">Skapa nytt recept</a>
+    </div>
 }
+
+<h1 class="page-headers">Recept</h1>
 
 
 <form method="get">
-    <table>
-        <tbody>
-            <tr>
+    <table class="list-table">
+        <tbody class="listing-options-body">
+            <tr class="sorting-container-row">
+
                 <th><label for="SortingKey">Sortera</label></th>
                 <td>
                     <select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()">
                         <option value="" disabled selected>Välj sortering</option>
                     </select>
                 </td>
-            </tr>
-            <tr>
+                </tr>
+                <tr class="filter-container">
                 <th><label for="FilterKey">Filtrera efter kategori</label></th>
                 <td>
                     <select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()">
                         <option value="" disabled selected>Välj filtrering</option>
                     </select>
                 </td>
-            </tr>
+                </tr>
+                <tr class="search-container">
+                    <th><label>Sök på namn</label></th>
+                    <td>
+                        <input type="text" name="name" value="" />
+                        <button type="submit">Sök</button>
+                    </td>
+                </tr>
+
         </tbody>
     </table>
-    <button type="submit">Sök</button>
 </form>
-<table>
+<table class="list-table">
     <thead>
         <tr>
             <th>
@@ -63,13 +75,6 @@
             <td>
                 @Html.DisplayFor(modelItem => recipe.MealCategory)
             </td>
-            @if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(recipe))
-            {
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@recipe.ID">Redigera</a> |
-                    <a asp-page="./Delete" asp-route-id="@recipe.ID">Ta bort</a>
-                </td>
-            }
         </tr>
         }
     </tbody>

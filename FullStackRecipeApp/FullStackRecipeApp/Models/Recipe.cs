@@ -26,11 +26,13 @@ namespace FullStackRecipeApp.Models
     public class Recipe
     {
         public int ID { get; set; }
-        [Required]
+        [Required, Display(Name = "Namn")]
         public string Name { get; set; }
-        [Required]
+        [Required, Display(Name = "Instruktioner")]
         public string Instructions { get; set; }
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
+        [Display(Name = "Målkategori")]
         public MealCategory MealCategory { get; set; }
         public List<Quantity> Quantities { get; set; }
         public List<RecipeMealPlan> Meals { get; set; }

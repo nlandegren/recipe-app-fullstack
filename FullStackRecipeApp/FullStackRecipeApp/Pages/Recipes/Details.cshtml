@@ -35,6 +35,7 @@
     @if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(Model.Recipe))
     {
         <a asp-page="./Edit" asp-route-id="@Model.Recipe.ID">Redigera receptet</a>
+        <a asp-page="./Delete" asp-route-id="@Model.Recipe.ID">Ta bort</a>
     }
-    <a asp-page="./Index">Back to Recipes</a>
+    <a asp-page="./Index">Tillbaka till alla recept</a>
 </div>

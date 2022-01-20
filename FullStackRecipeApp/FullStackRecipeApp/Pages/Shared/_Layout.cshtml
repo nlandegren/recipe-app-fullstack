@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FullStackRecipeApp</title>
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <header>
+        <div id="website-title-container">
+            <a asp-area="" asp-page="/Index">recipebook</a>
+        </div>
+        <nav>
+            <div class="topnav" id="myTopnav">
+                <a asp-area="" asp-page="/Index" class="active">Home</a>
 
-        <a asp-area="" asp-page="/Index">FullStackRecipeApp</a>
-        <nav >
-            <ul >
-                <li >
-                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                </li>
-                <li >
-                    <a asp-area="" asp-page="/Privacy">Privacy</a>
-                </li>
+                <a asp-area="" asp-page="/Privacy">Privacy</a>
+                <partial name="_LoginPartial" />
+
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </nav>
+
+
+        <nav>
+            <ul>
             </ul>
-            <partial name="_LoginPartial" />
         </nav>
 
     </header>
@@ -31,9 +40,9 @@
     <footer>
         &copy; 2022 - FullStackRecipeApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

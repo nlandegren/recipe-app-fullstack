@@ -27,6 +27,8 @@ namespace FullStackRecipeApp.Pages.Ingredients
         [BindProperty]
         public Ingredient Ingredient { get; set; }
 
+        public DietCategory Diet { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             IsLoggedIn = accessControl.IsLoggedIn();

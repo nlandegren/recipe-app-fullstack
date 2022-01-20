@@ -10,6 +10,7 @@ namespace FullStackRecipeApp.Models
 
     public enum DietCategory
     {
+        [Display(Name = "Lakto-ovo")]
         LactoOvo,
         Vegetarisk,
         Karnivor,
@@ -20,11 +21,13 @@ namespace FullStackRecipeApp.Models
     public class Ingredient
     {
         public int ID { get; set; }
-        [Display(Name = "Ingredient")]
+        [Display(Name = "Ingrediensnamn")]
         [Required]
         public string Name { get; set; }
-        [Required]
+        
+        [Required, Display(Name = "Matkategori")]
         public string FoodCategory { get; set; }
+        [Display(Name = "Dietkategori")]
         public DietCategory DietCategory { get; set; }
         public List<Quantity> Quantities { get; set; }
 

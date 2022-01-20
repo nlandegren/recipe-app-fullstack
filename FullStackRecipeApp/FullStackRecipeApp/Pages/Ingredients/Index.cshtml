@@ -5,31 +5,40 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Ingredienser</h1>
 
 @if (Model.IsLoggedIn)
 {
-    <p>
+    <div class="frontpage-section">
+
         <a asp-page="Create">Skapa ny ingrediens</a>
-    </p>
+    </div>
 }
 
+<h1 class="page-headers">Ingredienser</h1>
 
 <form method="get">
-    <table>
-        <tbody>
-            <tr>
+    <table class="list-table">
+        <thead class="listing-options-body">
+            <tr class="sorting-container">
                 <th><label for="SortingKey">Sortera</label></th>
                 <td><select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()"></select></td>
+            </tr>
+            <tr class="filter-container">
                 <th><label for="FilterKey">Filtrera efter diet</label></th>
                 <td><select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()"></select></td>
             </tr>
-        </tbody>
+            <tr class="search-container">
+                <th><label>Sök på namn</label></th>
+                <td>
+                    <input type="text" name="name" value="" />
+                    <button type="submit">Sök</button>
+                </td>
+            </tr>
+        </thead>
     </table>
-    <button type="submit">Sök</button>
 </form>
 
-<table>
+<table class="list-table">
     <thead>
         <tr>
             <th>
@@ -46,27 +55,25 @@
     <tbody>
         @foreach (var item in Model.Ingredients)
         {
-        <tr>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FoodCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DietCategory)
-            </td>
-            
-            <td>
-                @if (Model.IsLoggedIn)
-                {
-                    <a asp-page="./Edit" asp-route-id="@item.ID">Redigera</a>
-                    <a asp-page="./Delete" asp-route-id="@item.ID">Ta bort</a>
-                }
-            </td>
-            
+            <tr>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FoodCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DietCategory)
+                </td>
+                <td>
+                    @if (Model.IsLoggedIn)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.ID">Redigera</a>
+                        <a asp-page="./Delete" asp-route-id="@item.ID">Ta bort</a>
+                    }
+                </td>
 
-        </tr>
+            </tr>
         }
     </tbody>
 </table>

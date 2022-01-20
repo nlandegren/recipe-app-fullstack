@@ -7,13 +7,12 @@
 }
 
 
-<h1>Skapa nytt recept</h1>
+<h1 class="page-headers">Skapa nytt recept</h1>
 
 <hr />
 
 <div>
     <form method="post" id="create-recipe-form">
-        <h3>Vad ska receptet heta?</h3>
         <div asp-validation-summary="ModelOnly"></div>
         <div>
             <label asp-for="Recipe.Name">Namn: </label>
@@ -21,21 +20,18 @@
             <span asp-validation-for="Recipe.Name"></span>
         </div>
 
-        <h3>Beskriv receptet/lägg till noteringar.</h3>
         <div id="recipe-description-input">
             <label asp-for="Recipe.Description">Beskrivning/Noteringar: </label>
             <input asp-for="Recipe.Description" />
             <span asp-validation-for="Recipe.Description"></span>
         </div>
 
-        <h3>Lägg till instruktioner.</h3>
         <div id="recipe-instruction-input">
             <label asp-for="Recipe.Instructions">Instruktioner: </label>
             <input asp-for="Recipe.Instructions" />
             <span asp-validation-for="Recipe.Instructions"></span>
         </div>
 
-        @*fix binding*@
         <select name="Recipe.MealCategory" asp-for="Recipe.MealCategory" asp-items="Html.GetEnumSelectList<Models.MealCategory>()">
             <option value="" disabled selected>Välj kategori</option>
         </select>

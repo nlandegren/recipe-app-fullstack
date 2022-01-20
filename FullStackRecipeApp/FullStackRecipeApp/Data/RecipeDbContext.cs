@@ -16,6 +16,8 @@ namespace FullStackRecipeApp.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.UseCollation("Finnish_Swedish_CI_AS");
+            
             base.OnModelCreating(builder);
             builder.Entity<Quantity>()
                 .HasKey(i => new { i.IngredientID, i.RecipeID });
