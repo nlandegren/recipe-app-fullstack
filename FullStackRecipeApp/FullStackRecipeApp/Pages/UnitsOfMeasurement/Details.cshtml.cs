@@ -13,14 +13,13 @@ namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
     public class DetailsModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public DetailsModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
-        public bool IsLoggedIn { get; set; }
         public Unit Unit { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)

@@ -11,39 +11,34 @@
 
 <hr />
 
-<div>
-    <form method="post" id="create-recipe-form">
-        <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="Recipe.Name">Namn: </label>
-            <input asp-for="Recipe.Name" />
-            <span asp-validation-for="Recipe.Name"></span>
-        </div>
+<form method="post" class="edit-form-container">
+    <input type="hidden" asp-for="Recipe.UserID" />
 
-        <div id="recipe-description-input">
-            <label asp-for="Recipe.Description">Beskrivning/Noteringar: </label>
-            <input asp-for="Recipe.Description" />
-            <span asp-validation-for="Recipe.Description"></span>
-        </div>
+    <div asp-validation-summary="ModelOnly"></div>
+    <label asp-for="Recipe.Name">Namn: </label>
+    <input asp-for="Recipe.Name" />
+    <span asp-validation-for="Recipe.Name"></span>
 
-        <div id="recipe-instruction-input">
-            <label asp-for="Recipe.Instructions">Instruktioner: </label>
-            <input asp-for="Recipe.Instructions" />
-            <span asp-validation-for="Recipe.Instructions"></span>
-        </div>
+    <label asp-for="Recipe.Description">Beskrivning/Noteringar: </label>
+    <input asp-for="Recipe.Description" />
+    <span asp-validation-for="Recipe.Description"></span>
 
-        <select name="Recipe.MealCategory" asp-for="Recipe.MealCategory" asp-items="Html.GetEnumSelectList<Models.MealCategory>()">
-            <option value="" disabled selected>Välj kategori</option>
-        </select>
-        <div id="submit-button-container">
-            <input type="submit" value="Skapa recept" />
-        </div>
-        <div asp-validation-summary="All"></div>
-    </form>
-</div>
+    <label asp-for="Recipe.Instructions">Instruktioner: </label>
+    <input asp-for="Recipe.Instructions" />
+    <span asp-validation-for="Recipe.Instructions"></span>
+
+    <select name="Recipe.MealCategory" asp-for="Recipe.MealCategory" asp-items="Html.GetEnumSelectList<Models.MealCategory>()">
+        <option value="" disabled selected>Välj kategori</option>
+    </select>
+
+    <div id="submit-button-container">
+        <input type="submit" value="Skapa recept" />
+    </div>
+    <div asp-validation-summary="All"></div>
+</form>
 
 
-<div>
+<div class="bottom-buttons">
     <a asp-page="Index">Tillbaka till receptlistan.</a>
 </div>
 

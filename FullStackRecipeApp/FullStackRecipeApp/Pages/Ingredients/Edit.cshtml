@@ -5,11 +5,11 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Redigera ingrediens</h1>
+<h1 class="page-headers">Redigera ingrediens</h1>
 
 <hr />
 <div>
-    <div>
+    <div class="edit-form-container">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Ingredient.ID" />
@@ -35,8 +35,8 @@
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
+<div class="bottom-buttons">
+    <a asp-page="./Index">Tillbaka till alla ingredienser</a>
 </div>
 
 @section Scripts {

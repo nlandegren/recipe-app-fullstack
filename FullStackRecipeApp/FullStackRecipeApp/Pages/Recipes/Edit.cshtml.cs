@@ -102,18 +102,23 @@ namespace FullStackRecipeApp.Pages.Recipes
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
-            Recipe.UserID = accessControl.LoggedInUserID;
-            ModelState.Remove("Recipe.UserID");
+
+            //Recipe.UserID = accessControl.LoggedInUserID;
+            //ModelState.Remove("Recipe.UserID");
 
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+
             if (!accessControl.UserHasAccess(Recipe))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
             database.Attach(Recipe).State = EntityState.Modified;
+
+
+            // Functionality for adding new ingredients
 
             for (int i = 0; i < SelectedIngredientIDs.Count; i++)
             {
@@ -142,6 +147,8 @@ namespace FullStackRecipeApp.Pages.Recipes
                 database.Quantity.Add(Quantity);
                 await database.SaveChangesAsync();
             }
+
+
 
 
             try

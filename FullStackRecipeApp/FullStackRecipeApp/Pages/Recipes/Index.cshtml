@@ -5,6 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
+<h1 class="page-headers">Recept</h1>
 
 
 @if (Model.AccessControl.IsLoggedIn())
@@ -14,39 +15,26 @@
     </div>
 }
 
-<h1 class="page-headers">Recept</h1>
 
 
 <form method="get">
-    <table class="list-table">
-        <tbody class="listing-options-body">
-            <tr class="sorting-container-row">
+    <div class="listing-options">
+        <div>
+            <select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()">
+                <option value="" disabled selected>Välj sortering</option>
+            </select>
+        </div>
+        <div>
+            <select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()">
+                <option value="" disabled selected>Välj filtrering</option>
+            </select>
+        </div>
+        <div>
+            <input type="text" asp-for="SearchTerm" placeholder="Sökord" />
+            <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
 
-                <th><label for="SortingKey">Sortera</label></th>
-                <td>
-                    <select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()">
-                        <option value="" disabled selected>Välj sortering</option>
-                    </select>
-                </td>
-                </tr>
-                <tr class="filter-container">
-                <th><label for="FilterKey">Filtrera efter kategori</label></th>
-                <td>
-                    <select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()">
-                        <option value="" disabled selected>Välj filtrering</option>
-                    </select>
-                </td>
-                </tr>
-                <tr class="search-container">
-                    <th><label>Sök på namn</label></th>
-                    <td>
-                        <input type="text" name="name" value="" />
-                        <button type="submit">Sök</button>
-                    </td>
-                </tr>
-
-        </tbody>
-    </table>
 </form>
 <table class="list-table">
     <thead>
@@ -65,17 +53,19 @@
     <tbody>
         @foreach (var recipe in Model.Recipes)
         {
-        <tr>
-            <td>
-                <a asp-page="./Details" asp-route-id="@recipe.ID">@Html.DisplayFor(modelItem => recipe.Name)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => recipe.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => recipe.MealCategory)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@recipe.ID">@Html.DisplayFor(modelItem => recipe.Name)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => recipe.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => recipe.MealCategory)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+

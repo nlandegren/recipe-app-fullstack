@@ -5,23 +5,23 @@
 }
 
 
+<div class="frontpage-grid">
+    <div class="frontpage-section">
+        <a asp-page="./Recipes/Index">Recept</a>
+    </div>
 
-<div class="frontpage-section">
-    <a asp-page="./Recipes/Index">Recept</a>
+    <div class="frontpage-section">
+        <a asp-page="./Ingredients/Index">Ingredienser</a>
+    </div>
+
+    <div class="frontpage-section">
+        <a asp-page="./MealPlans/Index">Planeringar</a>
+    </div>
+
+    <div class="frontpage-section">
+        <a asp-page="./UnitsOfMeasurement/Index">Måttenheter</a>
+    </div>
 </div>
-
-<div class="frontpage-section">
-    <a asp-page="./Ingredients/Index">Ingredienser</a>
-</div>
-
-<div class="frontpage-section">
-    <a asp-page="./MealPlans/Index">Planeringar</a>
-</div>
-
-<div class="frontpage-section">
-    <a asp-page="./UnitsOfMeasurement/Index">Måttenheter</a>
-</div>
-
 @if (Model.accessControl.IsLoggedIn())
 {
     <div class="frontpage-section">

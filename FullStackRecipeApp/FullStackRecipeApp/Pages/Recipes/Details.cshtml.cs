@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
+using System.Text.RegularExpressions;
 
 namespace FullStackRecipeApp.Pages.Recipes
 {
@@ -24,7 +25,7 @@ namespace FullStackRecipeApp.Pages.Recipes
         public IList<Quantity> Quantities { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
-        {           
+        {
             if (id == null)
             {
                 return NotFound();
@@ -40,7 +41,16 @@ namespace FullStackRecipeApp.Pages.Recipes
             {
                 return NotFound();
             }
+            // Not working as intended
+            //Recipe.Instructions = InsertNewLines(Recipe.Instructions);
+
             return Page();
+        }
+
+        public string InsertNewLines(string instructions)
+        {
+
+            return Regex.Replace(instructions, @"\d\.", @"$&\n");
         }
     }
 }

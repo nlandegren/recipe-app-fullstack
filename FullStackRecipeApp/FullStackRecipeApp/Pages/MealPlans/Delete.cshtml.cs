@@ -37,7 +37,10 @@ namespace FullStackRecipeApp.Pages.MealPlans
                 return NotFound();
             }
 
-            MealPlan = await database.MealPlan.FirstOrDefaultAsync(m => m.ID == id);
+            MealPlan = await database.MealPlan
+                .Include(m => m.Meals)
+                .ThenInclude(m => m.Recipe)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (MealPlan == null)
             {

@@ -54,14 +54,22 @@ namespace FullStackRecipeApp.Pages.Recipes
         public SortingKey SortingKey { get; set; }
         [FromQuery]
         public FilterKey FilterKey { get; set; }
-
+        [FromQuery]
+        public string SearchTerm { get; set; }
 
         public async Task OnGetAsync()
         {
 
-            Recipes = await database.Recipe.ToListAsync();
-
             var query = database.Recipe.AsNoTracking();
+
+            if (SearchTerm != null)
+            {
+                query = query.Where(r =>
+                    r.Name.ToLower().Contains(SearchTerm.ToLower()) ||
+                    r.Description.ToLower().Contains(SearchTerm.ToLower())
+                );
+            }
+
 
             if (FilterKey == FilterKey.Breakfast)
             {

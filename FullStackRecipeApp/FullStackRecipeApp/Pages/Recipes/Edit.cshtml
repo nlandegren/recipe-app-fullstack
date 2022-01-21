@@ -8,63 +8,51 @@
 <h1>Redigera recept</h1>
 
 <hr />
-<div>
-    <div>
-        <form method="post">
-            <div asp-validation-summary="ModelOnly"></div>
-            <input type="hidden" asp-for="Recipe.ID" />
-            <div>
-                <label asp-for="Recipe.Name">Namn: </label>
-                <input asp-for="Recipe.Name" />
-                <span asp-validation-for="Recipe.Name"></span>
-            </div>
-            <div>
-                <label asp-for="Recipe.Description">Beskrivning/noteringar: </label>
-                <input asp-for="Recipe.Description" />
-                <span asp-validation-for="Recipe.Description"></span>
-            </div>
-            <div>
-                <label asp-for="Recipe.Instructions">Instruktioner: </label>
-                <input asp-for="Recipe.Instructions" />
-                <span asp-validation-for="Recipe.Instructions"></span>
-            </div>
-            <div>
-                <label asp-for="Recipe.MealCategory">Kategori: </label>
-                <select asp-for="Recipe.MealCategory" asp-items="Html.GetEnumSelectList<Models.MealCategory>()">
-                    <option value="" disabled selected>Välj kategori</option>
-                </select>
-            </div>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <select name="SelectedIngredientIDs" asp-items="Model.IngredientOptions">
-                                <option value="" disabled selected>Välj ingrediens</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="SelectedMeasurementIDs" asp-items="Model.MeasurementOptions">
-                                <option value="" disabled selected>Välj enhet</option>
-                            </select>
-                        </td>
-                        <td>
-                            <label asp-for="Quantity.Amount">Välj mängd</label>
-                            <input name="SelectedAmounts" asp-for="Quantity.Amount" />
-                            <span asp-validation-for="Quantity.Amount"></span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="form-group">
-                <input type="submit" value="Spara" />
-            </div>
-            <div asp-validation-summary="All"></div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-page="./Index">Tillbaka till receptlistan</a>
+<form method="post">
+    <div class="edit-form-container">
+        <div asp-validation-summary="ModelOnly"></div>
+        <label asp-for="Recipe.Name">Namn</label>
+        <textarea asp-for="Recipe.Name"></textarea>
+
+        <label asp-for="Recipe.Description">Beskrivning/noteringar: </label>
+        <textarea asp-for="Recipe.Description"></textarea>
+
+        <label asp-for="Recipe.Instructions">Instruktioner: </label>
+        <textarea asp-for="Recipe.Instructions"></textarea>
+
+        <label asp-for="Recipe.MealCategory">Kategori: </label>
+        <select asp-for="Recipe.MealCategory" asp-items="Html.GetEnumSelectList<Models.MealCategory>()">
+            <option value="" disabled selected>Välj kategori</option>
+        </select>
+    </div>
+
+    <hr />
+    <p>Lägg till ingrediens</p>
+
+    @* Make this cloneable, implement functionality *@
+
+    <div class="ingredient-div">
+        <select name="SelectedIngredientIDs" asp-items="Model.IngredientOptions">
+            <option value="" disabled selected>Välj ingrediens</option>
+        </select>
+        <select name="SelectedMeasurementIDs" asp-items="Model.MeasurementOptions">
+            <option value="" disabled selected>Välj enhet</option>
+        </select>
+        <label asp-for="Quantity.Amount">Välj mängd</label>
+        <input class="edit-input" name="SelectedAmounts" asp-for="Quantity.Amount" />
+        <label>Ta bort ingrediens?</label>
+        <input type="checkbox" />
+    </div>
+
+    <div>
+        <input type="submit" value="Spara" />
+    </div>
+    <div asp-validation-summary="All"></div>
+</form>
+
+<div class="bottom-buttons">
+    <a asp-page="./Index">Tillbaka till alla recept</a>
 </div>
 
 @section Scripts {

@@ -9,36 +9,24 @@
 <h1 class="page-headers">Skapa ny ingrediens</h1>
 
 <hr />
-<div>
-    <div>
-        <form id="post-form" method="post">
-            <div asp-validation-summary="ModelOnly"></div>
-            <div>
-                <label asp-for="Ingredient.Name"></label>
-                <input asp-for="Ingredient.Name" />
-                <span asp-validation-for="Ingredient.Name"></span>
-            </div>
-            <div>
-                <label asp-for="Ingredient.FoodCategory">Matkategori: </label>
-                <input asp-for="Ingredient.FoodCategory" />
-                <span asp-validation-for="Ingredient.FoodCategory"></span>
-            </div>
-            <div>
-                <label asp-for="Ingredient.DietCategory">Dietkategori: </label>
-                <select asp-for="Ingredient.DietCategory" asp-items="Html.GetEnumSelectList<Models.DietCategory>()">
-                    <option value="" disabled selected>Välj kategori</option>
-                </select>
-            </div>
-            <div>
-                <input type="submit" value="Skapa" />
-            </div>
-            <div asp-validation-summary="All"> </div>
-        </form>
-    </div>
-</div>
+<form class="edit-form-container" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+    <label asp-for="Ingredient.Name"></label>
+    <input asp-for="Ingredient.Name" />
+    <span asp-validation-for="Ingredient.Name"></span>
+    <label asp-for="Ingredient.FoodCategory">Matkategori: </label>
+    <input asp-for="Ingredient.FoodCategory" />
+    <span asp-validation-for="Ingredient.FoodCategory"></span>
+    <label asp-for="Ingredient.DietCategory">Dietkategori: </label>
+    <select asp-for="Ingredient.DietCategory" asp-items="Html.GetEnumSelectList<Models.DietCategory>()">
+        <option value="" disabled selected>Välj kategori</option>
+    </select>
+    <input type="submit" value="Skapa" />
+    <div asp-validation-summary="All"> </div>
+</form>
 
-<div>
-    <a asp-page="Index">Tillbaka till alla ingredienser</a>
+<div class="bottom-buttons">
+    <a asp-page="Index">Tillbaka till ingredienser</a>
 </div>
 
 @section Scripts {

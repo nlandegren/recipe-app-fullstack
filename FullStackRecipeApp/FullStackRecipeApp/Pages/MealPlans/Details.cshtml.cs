@@ -14,15 +14,13 @@ namespace FullStackRecipeApp.Pages.MealPlans
     public class DetailsModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public DetailsModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
-
-        public bool IsLoggedIn { get; set; }
 
         public MealPlan MealPlan { get; set; }
 

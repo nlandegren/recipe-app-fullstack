@@ -82,7 +82,7 @@ namespace FullStackRecipeApp.Pages
             }
             await database.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Recipes/Index");
         }
 
 

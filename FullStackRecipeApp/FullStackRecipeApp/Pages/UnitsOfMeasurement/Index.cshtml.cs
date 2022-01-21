@@ -13,14 +13,13 @@ namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
     public class IndexModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public IndexModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
-        public bool IsLoggedIn { get; set; }
 
         public IList<Unit> Unit { get;set; }
 

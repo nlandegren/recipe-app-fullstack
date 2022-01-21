@@ -25,5 +25,11 @@ namespace FullStackRecipeApp.Data
         {
             return recipe.UserID == LoggedInUserID;
         }
+
+        // UserID in Ingredient not implemented
+        //public bool UserHasAccess(Ingredient ingredient)
+        //{
+        //    return ingredient.UserID == LoggedInUserID;
+        //}
     }
 }

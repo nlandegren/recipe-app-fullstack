@@ -42,37 +42,52 @@ namespace FullStackRecipeApp.Pages.Recipes
         [BindProperty]
         public Recipe Recipe { get; set; }
 
+
+        private void CreateEmptyRecipe()
+        {
+            Recipe = new Recipe
+            {
+                UserID = accessControl.LoggedInUserID
+            };
+        }
+
         public IActionResult OnGet()
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            CreateEmptyRecipe();
+
+            if (!accessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
+
             return Page();
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Recipe recipe)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            CreateEmptyRecipe();
+
+            if (!accessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
-            Recipe.UserID = accessControl.LoggedInUserID;
-            // Because UserID was added after model state evaluation, we need to remove error associated with it. This might cause problems if there are other errors.
-            ModelState.Remove("Recipe.UserID");
+            
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            database.Recipe.Add(Recipe);
+            Recipe.Name = recipe.Name;
+            Recipe.Description = recipe.Description;
+            Recipe.Instructions = recipe.Description;
+            Recipe.MealCategory = recipe.MealCategory;
+
+            database.Recipe.Add(recipe);
             
             await database.SaveChangesAsync();
 
-            return RedirectToPage("./Edit", new { id = Recipe.ID});
+            return RedirectToPage("./Edit", new { id = recipe.ID});
         }
     }
 }

@@ -5,6 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
+<h1 class="page-headers">Ingredienser</h1>
 
 @if (Model.IsLoggedIn)
 {
@@ -14,28 +15,21 @@
     </div>
 }
 
-<h1 class="page-headers">Ingredienser</h1>
 
 <form method="get">
-    <table class="list-table">
-        <thead class="listing-options-body">
-            <tr class="sorting-container">
-                <th><label for="SortingKey">Sortera</label></th>
-                <td><select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()"></select></td>
-            </tr>
-            <tr class="filter-container">
-                <th><label for="FilterKey">Filtrera efter diet</label></th>
-                <td><select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()"></select></td>
-            </tr>
-            <tr class="search-container">
-                <th><label>Sök på namn</label></th>
-                <td>
-                    <input type="text" name="name" value="" />
-                    <button type="submit">Sök</button>
-                </td>
-            </tr>
-        </thead>
-    </table>
+    <div class="listing-options">
+
+        <div>
+            <select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()"></select>
+        </div>
+        <div>
+            <select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()"></select>
+        </div>
+        <div>
+            <input type="text" asp-for="SearchTerm" placeholder="Sök" />
+            <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
 </form>
 
 <table class="list-table">
@@ -64,13 +58,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DietCategory)
-                </td>
-                <td>
-                    @if (Model.IsLoggedIn)
-                    {
-                        <a asp-page="./Edit" asp-route-id="@item.ID">Redigera</a>
-                        <a asp-page="./Delete" asp-route-id="@item.ID">Ta bort</a>
-                    }
                 </td>
 
             </tr>

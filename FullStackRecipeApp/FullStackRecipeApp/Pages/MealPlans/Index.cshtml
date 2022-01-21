@@ -5,39 +5,38 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="page-headers">Matplaneringar</h1>
+
 
 @if (Model.IsLoggedIn)
 {
-    <p>
+    <div class="frontpage-section">
         <a asp-page="Create">Skapa ny planering</a>
-    </p>
+    </div>
 }
 
 
 <form method="get">
-    <table>
-        <tbody>
-            <tr>
-                <th><label for="SortingKey">Sortera</label></th>
-                <td>
-                    <select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()">
-                        <option value="" disabled selected>Välj sortering</option>
-                    </select>
-                </td>
-                <th><label for="FilterKey">Filtrera efter kategori</label></th>
-                <td>
-                    <select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()">
-                        <option value="" disabled selected>Välj filtrering</option>
-                    </select>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <button type="submit">Sök</button>
+    <div class="listing-options">
+
+        <div>
+            <select asp-for="SortingKey" asp-items="Html.GetEnumSelectList<SortingKey>()">
+                <option value="" disabled selected>Välj sortering</option>
+            </select>
+        </div>
+        <div>
+            <select asp-for="FilterKey" asp-items="Html.GetEnumSelectList<FilterKey>()">
+                <option value="" disabled selected>Välj filtrering</option>
+            </select>
+        </div>
+        <div>
+            <input type="text" asp-for="SearchTerm" placeholder="Sök" />
+            <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
 </form>
 
-<table class="table">
+<table class="list-table">
     <thead>
         <tr>
             <th>
@@ -57,28 +56,21 @@
     <tbody>
         @foreach (var plan in Model.MealPlans)
         {
-        <tr>
+            <tr>
 
-            <td>
-                <a asp-page="./Details" asp-route-id="@plan.ID">@plan.Name</a>
-            </td>
-            <td>
-                @plan.WeekNumber
-            </td>
-            <td>
-                @plan.Meals.Count()
-            </td>
-            <td>
-                (användarnamn här)
-            </td>
-            @if (Model.IsLoggedIn)
-            {
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@plan.ID">Redigera</a> |
-                    <a asp-page="./Delete" asp-route-id="@plan.ID">Ta bort</a>
+                    <a asp-page="./Details" asp-route-id="@plan.ID">@plan.Name</a>
                 </td>
-            }
-        </tr>
+                <td>
+                    @plan.WeekNumber
+                </td>
+                <td>
+                    @plan.Meals.Count()
+                </td>
+                <td>
+                    (användarnamn här)
+                </td>
+            </tr>
         }
     </tbody>
 </table>

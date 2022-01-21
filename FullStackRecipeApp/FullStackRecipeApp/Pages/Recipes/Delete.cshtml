@@ -5,11 +5,9 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1 class="page-headers">@Model.Recipe.Name</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Recipe</h4>
     <hr />
     <dl>
         <dt>
@@ -25,10 +23,15 @@
             @Html.DisplayFor(model => model.Recipe.Description)
         </dd>
     </dl>
-    
-    <form method="post">
+
+    <h2 class="page-headers">Vill du verkligen ta bort receptet?</h2>
+
+    <form method="post" class="edit-form-container">
         <input type="hidden" asp-for="Recipe.ID" />
-        <input type="submit" value="Delete"/> |
-        <a asp-page="./Index">Back to List</a>
+        <input type="submit" value="Ta bort receptet" />
     </form>
+
+    <div class="bottom-buttons">
+        <a asp-page="./Index">Tillbaka till recept</a>
+    </div>
 </div>

@@ -5,7 +5,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@Model.MealPlan.Name | Vecka @Model.MealPlan.WeekNumber</h1>
+<h1 class="page-headers">@Model.MealPlan.Name | Vecka @Model.MealPlan.WeekNumber</h1>
 
 <div>
     <hr />
@@ -22,10 +22,17 @@
         </dl>
     }
 </div>
-<div>
-    @if (Model.IsLoggedIn)
-    {
-        <a asp-page="./Edit" asp-route-id="@Model.MealPlan.ID">Redigera</a>
-    }
-    <a asp-page="./Index">Tillbaka till planeringar-listan</a>
+@if (Model.AccessControl.IsLoggedIn())
+{
+<div class="bottom-buttons">
+    <a asp-page="./Index">Tillbaka till planeringar</a>
+    <a asp-page="./Edit" asp-route-id="@Model.MealPlan.ID">Redigera planering</a>
+    <a asp-page="./Delete" asp-route-id="@Model.MealPlan.ID">Ta bort planering</a>
 </div>
+}
+else
+{
+    <div class="bottom-buttons">
+        <a asp-page="./Index">Tillbaka till planeringar</a>
+    </div>
+}

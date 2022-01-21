@@ -18,10 +18,19 @@
         </dd>
     </dl>
 </div>
-<div>
-    @if (Model.IsLoggedIn)
+<div class="bottom-buttons">
+
+    @if (Model.AccessControl.IsLoggedIn())
     {
-        <a asp-page="./Edit" asp-route-id="@Model.Unit.ID">Edit</a>
+        <a asp-page="./Index">Tillbaka till enheter</a>
+        <a asp-page="./Edit" asp-route-id="@Model.Unit.ID">Redigera enhet</a>
+        <a asp-page="./Delete" asp-route-id="@Model.Unit.ID">Ta bort enhet</a>
+
     }
-    <a asp-page="./Index">Back to List</a>
+    else
+    {
+
+        <a asp-page="./Index">Tillbaka till enheter</a>
+    }
+
 </div>

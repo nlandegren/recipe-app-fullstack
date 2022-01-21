@@ -7,31 +7,23 @@
 
 
 
-<h1>Skapa en veckomatsedel</h1>
+<h1 class="page-headers">Skapa ny veckomatsedel</h1>
 <hr />
 
-<div>
-    <form method="post">
-        <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="MealPlan.WeekNumber">Veckonummer: </label>
-            <input asp-for="MealPlan.WeekNumber" />
-            <span asp-validation-for="MealPlan.WeekNumber"></span>
-        </div>
-        <div>
-            <label asp-for="MealPlan.Name">Namn: </label>
-            <input asp-for="MealPlan.Name" />
-            <span asp-validation-for="MealPlan.Name"></span>
-        </div>
-        <div>
-            <input type="submit" value="Skapa planering" />
-        </div>
-    </form>
-</div>
+<form method="post" class="edit-form-container">
+    <div asp-validation-summary="ModelOnly"></div>
+        <label asp-for="MealPlan.WeekNumber">Veckonummer: </label>
+        <input asp-for="MealPlan.WeekNumber" />
+        <span asp-validation-for="MealPlan.WeekNumber"></span>
+        <label asp-for="MealPlan.Name">Namn: </label>
+        <input asp-for="MealPlan.Name" />
+        <span asp-validation-for="MealPlan.Name"></span>
+        <input type="submit" value="Skapa planering" />
+</form>
 
 
-<div>
-    <a asp-page="Index">Tillbaka till planeringar-listan</a>
+<div class="bottom-buttons">
+    <a asp-page="Index">Tillbaka till planeringar</a>
 </div>
 
 @section Scripts {

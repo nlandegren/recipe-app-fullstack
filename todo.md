@@ -35,6 +35,7 @@
         * ~~Fix placeholder in drop down~~
     * ~~Sort by number of ingredients~~
         * ~~Fix placeholder in drop down~~
+    * ~~Search by name and description~~
 
 * Ingredients
     * ~~List~~
@@ -49,6 +50,8 @@
     * ~~Sort by name or popularity~~
         * Fix placeholder in drop down
         * probably fix LINQ expression
+    * ~~Search by name~~
+
 
 * MealPlans
     * ~~List
@@ -60,6 +63,7 @@
         * Fix so we can see all recipes and edit each.
         * Edit adds new recipe??
     * Details
+        * Group by week day
     * Sort by week number
     * Filter by diet category (majority of the meals need to be in a category)
 
@@ -75,9 +79,16 @@
     * ~~Quantities
     * MealPlans
 
-### Semantic html
 
-### CSS
+### Html
+    * Make sure all labels are in swedish and use Display(name) if possible
+
+
+### ~~CSS~~
+    * Tidy up if have time
+
+
+
 
 ## Graded VG
 
@@ -115,11 +126,15 @@ Lösningsförslag 4. På sidan för skapa nytt recept har jag två formulär: et
 ### Problem att ta upp med Jakob
 
 * Javascript för bättre formulär
-* Att lägga till userID i alla tabeller skapar "multiple cascade delete paths"
-* Jag kan ta bort ingredienser och de tas bort från sina recept, problem?
-* Är min lösning med att ta bort felmeddelnade från modelstate efter model binding ok ?
-* Hur få tag i användarnamn för ett recept
-* Måste jag ha CRUD operationer för måttenheter och join-tabeller?
-* Bör jag också kolla inloggningstatus i post-handlers?
-
+    * lägga till/redigera/ta bort ingredienser i recept
+    * lägga till/redigera/ta bort måltider i matplaneringar
+* Gruppera måltider i matplanering efter dag
 * Går det bra att jag skippar exempeldata på matplanering? Det är omständigt
+
+
+Lösningar
+    * whitespace css för radbryt, värde pre eller preline
+    * en delete-knapp per ingrediens som visas i en statisk lista ovanför ingrediens fälten, gör handler i edit för att ta bort ingrediensen
+    * om modelstate-problemet: 
+
+

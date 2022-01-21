@@ -52,12 +52,37 @@ namespace FullStackRecipeApp.Pages.MealPlans
         public SortingKey SortingKey { get; set; }
         [FromQuery]
         public FilterKey FilterKey { get; set; }
+        [FromQuery]
+        public string SearchTerm { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
             IsLoggedIn = accessControl.IsLoggedIn();
 
-            MealPlans = await database.MealPlan.Include(m => m.Meals).ToListAsync();
+            var query = database.MealPlan.
+                Include(m => m.Meals)
+                .AsNoTracking();
+
+            if (SearchTerm != null)
+            {
+                query = query.Where(m =>
+                    m.Name.ToLower().Contains(SearchTerm.ToLower())
+                );
+            }
+
+            // Sort by week number
+            if (SortingKey == SortingKey.WeekNumber)
+            {
+                query = query.OrderByDescending(m => m.WeekNumber);
+            }
+
+            // Sort by number of recipes
+            if (SortingKey == SortingKey.RecipeCount)
+            {
+                query = query.OrderByDescending(m => m.Meals.Count);
+            }
+
+            MealPlans = await query.ToListAsync();
             return Page();
         }
     }

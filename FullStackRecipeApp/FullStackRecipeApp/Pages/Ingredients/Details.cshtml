@@ -5,35 +5,45 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Detaljer</h1>
+<h1 class="page-headers">Detaljer</h1>
 <hr />
 
-<div>    
+<div class="details-container">
     <dl>
         <dt>
-            @Html.DisplayNameFor(model => model.Ingredient.Name)
+            @Html.DisplayNameFor(model => model.Ingredient.Name):
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Ingredient.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Ingredient.FoodCategory)
+            @Html.DisplayNameFor(model => model.Ingredient.FoodCategory):
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Ingredient.FoodCategory)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Ingredient.DietCategory)
+            @Html.DisplayNameFor(model => model.Ingredient.DietCategory):
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Ingredient.DietCategory)
         </dd>
     </dl>
 </div>
-<div>
-    @if (Model.IsLoggedIn)
-    {
-        <a asp-page="./Edit" asp-route-id="@Model.Ingredient.ID">Edit</a>
-    }
-    <a asp-page="./Index">Back to List</a>
+
+@*UserID in Ingredient not implemented*@
+@if (Model.AccessControl.IsLoggedIn() @*&& Model.AccessControl.UserHasAccess(Model.Ingredient)*@)
+{
+<div class="bottom-buttons">
+    <a asp-page="./Index">Tillbaka till ingredienser</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Ingredient.ID">Redigera ingrediens</a>
+    <a asp-page="./Delete" asp-route-id="@Model.Ingredient.ID">Ta bort ingrediens</a>
 </div>
+}
+else
+{
+    <div>
+        <a asp-page="./Index">Tillbaka till ingredienser</a>
+    </div>
+}
+    

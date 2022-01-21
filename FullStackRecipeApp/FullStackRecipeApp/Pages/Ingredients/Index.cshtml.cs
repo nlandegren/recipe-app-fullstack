@@ -51,14 +51,21 @@ namespace FullStackRecipeApp.Pages.Ingredients
         public SortingKey SortingKey { get; set; }
         [FromQuery]
         public FilterKey FilterKey { get; set; }
+        [FromQuery]
+        public string SearchTerm { get; set; }
+
+
 
         public async Task OnGetAsync()
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-
-            Ingredients = await database.Ingredient.Include(i => i.Quantities).ToListAsync();
-
             var query = database.Ingredient.AsNoTracking();
+
+
+            if (SearchTerm != null)
+            {
+                query = query.Where(i =>
+                    i.Name.ToLower().Contains(SearchTerm.ToLower()));
+            }
 
             if (FilterKey == FilterKey.Karnivor)
             {
@@ -71,6 +78,10 @@ namespace FullStackRecipeApp.Pages.Ingredients
             else if (FilterKey == FilterKey.Vegetarisk)
             {
                 query = query.Where(i => i.DietCategory == DietCategory.Vegetarisk);
+            }
+            else if (FilterKey == FilterKey.Pesceterian)
+            {
+                query = query.Where(i => i.DietCategory == DietCategory.Pesceterian);
             }
 
             if (SortingKey == SortingKey.Name)
