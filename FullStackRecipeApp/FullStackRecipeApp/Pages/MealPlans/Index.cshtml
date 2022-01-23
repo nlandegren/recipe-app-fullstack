@@ -10,7 +10,7 @@
 
 @if (Model.IsLoggedIn)
 {
-    <div class="frontpage-section">
+    <div class="frontpage-section create-new-button">
         <a asp-page="Create">Skapa ny planering</a>
     </div>
 }
@@ -48,9 +48,6 @@
             <th>
                 Antal recept
             </th>
-            <th>
-                Användare
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -66,9 +63,6 @@
                 </td>
                 <td>
                     @plan.Meals.Count()
-                </td>
-                <td>
-                    (användarnamn här)
                 </td>
             </tr>
         }

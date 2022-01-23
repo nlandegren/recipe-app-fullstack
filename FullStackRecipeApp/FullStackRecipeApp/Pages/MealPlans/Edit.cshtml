@@ -9,37 +9,91 @@
 
 
 <hr />
-<div >
+<form method="post">
     <div class="edit-form-container">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" ></div>
-            <input type="hidden" asp-for="MealPlan.ID" />
-            
-            <div>
-                <label asp-for="MealPlan.Name">Namn </label>
-                <input asp-for="MealPlan.Name"/>
-                <span asp-validation-for="MealPlan.Name"></span>
-            </div>
-            <div>
-                <label asp-for="MealPlan.WeekNumber">Vecka: </label>
-                <input asp-for="MealPlan.WeekNumber"/>
-                <span asp-validation-for="MealPlan.WeekNumber"></span>
-            </div>
-            <div>
-                <label asp-for="MealPlan.Meals[0].WeekDay">Välj dag</label>
-                <select name="WeekDay" asp-items="Html.GetEnumSelectList<Models.WeekDay>()"></select>
-            </div>
-            <div>
-                <label asp-for="MealPlan.Meals[0].RecipeID">Välj recept</label>
-                <select name="RecipeID" asp-items="Model.Options"></select>
-            </div>
+        <div asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="MealPlan.ID" />
 
-            <div>
-                <input type="submit" value="Spara planering"/>
-            </div>
-        </form>
+        <div>
+            <label asp-for="MealPlan.Name">Namn </label>
+            <input asp-for="MealPlan.Name" />
+            <span asp-validation-for="MealPlan.Name"></span>
+        </div>
+        <div>
+            <label asp-for="MealPlan.WeekNumber">Vecka: </label>
+            <input asp-for="MealPlan.WeekNumber" />
+            <span asp-validation-for="MealPlan.WeekNumber"></span>
+        </div>
+
     </div>
-</div>
+
+
+    <hr />
+
+    <h3 class="page-headers">Lägg till recept till planeringen</h3>
+
+    <hr />
+
+    <div class="ingredient-div">
+
+        <select name="NewWeekDayID" asp-items="Html.GetEnumSelectList<Models.WeekDay>()">
+            <option value="0" disabled selected>--Välj veckodag--</option>
+        </select>
+
+        <select name="NewRecipeID" asp-items="Model.RecipeOptions">
+            <option value="0" disabled selected>--Välj recept--</option>
+        </select>
+        <input type="submit" name="new-meal" value="Lägg till" />
+
+        <div />
+
+        @foreach (var meal in Model.PlannedMeals)
+        {
+            <div class="ingredient-div">
+                <select name="SelectedWeekDayIDs">
+                    @foreach (var weekdayOption in Html.GetEnumSelectList<Models.WeekDay>())
+                    {
+                        if (weekdayOption.Text == meal.WeekDay.ToString())
+                        {
+                            <option value="@weekdayOption.Value" selected>@weekdayOption.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@weekdayOption.Value">@weekdayOption.Text</option>
+                        }
+                    }
+                </select>
+                @* Iterating instead of using asp-items because I want to set selected on the right option *@
+                <select name="SelectedRecipeIDs">
+                    @foreach (var recipeOption in Model.RecipeOptions)
+                    {
+                        if (recipeOption.Value == meal.RecipeID.ToString())
+                        {
+                            <option value="@recipeOption.Value" selected>@recipeOption.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@recipeOption.Value">@recipeOption.Text</option>
+                        }
+
+                    }
+
+                </select>
+                <input type="submit" asp-page-handler="delete" asp-route-recipeMealPlanID="@meal.ID" value="Ta bort" />
+                @*<button asp-page-handler="delete" asp-route-recipeMealPlanID="@meal.ID"> Ta bort</button>*@
+            </div>
+        }
+
+
+
+        <div>
+            <input type="submit" value="Spara planering" />
+        </div>
+    </div>
+
+</form>
+
+<hr />
 
 <div class="bottom-buttons">
     <a asp-page="./Index">Tillbaka till planeringar</a>

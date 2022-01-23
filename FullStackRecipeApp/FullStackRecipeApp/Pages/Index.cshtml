@@ -21,14 +21,14 @@
     <div class="frontpage-section">
         <a asp-page="./UnitsOfMeasurement/Index">Måttenheter</a>
     </div>
+
+    @if (Model.accessControl.IsLoggedIn())
+    {
+        <div id="sample-data-button" class="frontpage-section">
+            <a asp-page="./AddSampleData">Lägg till exempeldata (OBS tar bort all data)</a>
+        </div>
+    }
+
 </div>
-@if (Model.accessControl.IsLoggedIn())
-{
-    <div class="frontpage-section">
-        <a asp-page="./AddSampleData">Lägg till exempeldata (OBS tar bort all data)</a>
-    </div>
-}
-
-
 
 

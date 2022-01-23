@@ -25,6 +25,11 @@ namespace FullStackRecipeApp.Pages.MealPlans
         [BindProperty]
         public MealPlan MealPlan { get; set; }
 
+        public List<RecipeMealPlan> PlannedMeals { get; set; }
+
+        public List<WeekDay> WeekDays { get; set; }
+
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             IsLoggedIn = accessControl.IsLoggedIn();
@@ -42,10 +47,21 @@ namespace FullStackRecipeApp.Pages.MealPlans
                 .ThenInclude(m => m.Recipe)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
+
             if (MealPlan == null)
             {
                 return NotFound();
             }
+
+            PlannedMeals = MealPlan.Meals.ToList();
+
+            WeekDays = PlannedMeals
+                .Select(m => m.WeekDay)
+                .Distinct()
+                .OrderBy(w => w)
+                .ToList();
+
+
             return Page();
         }
 

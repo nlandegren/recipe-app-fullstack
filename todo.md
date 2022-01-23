@@ -125,8 +125,9 @@ Lösningsförslag 4. På sidan för skapa nytt recept har jag två formulär: et
 
 ### Problem att ta upp med Jakob
 
-* Javascript för bättre formulär
-    * lägga till/redigera/ta bort ingredienser i recept
+* bättre formulär
+    * ~~lägga till/redigera/ta bort ingredienser i recept~~
+        * bugg som bara händer ibland (flera object av samma identitet som "trackas samtidigt")
     * lägga till/redigera/ta bort måltider i matplaneringar
 * Gruppera måltider i matplanering efter dag
 * Går det bra att jag skippar exempeldata på matplanering? Det är omständigt
@@ -136,5 +137,5 @@ Lösningar
     * whitespace css för radbryt, värde pre eller preline
     * en delete-knapp per ingrediens som visas i en statisk lista ovanför ingrediens fälten, gör handler i edit för att ta bort ingrediensen
     * om modelstate-problemet: 
-
+FIXA SÅ ATT TOMMA FÄLT INTE SKICKAS MED FORMULÄRET
 

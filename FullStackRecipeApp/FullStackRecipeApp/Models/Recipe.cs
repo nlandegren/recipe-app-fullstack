@@ -57,10 +57,11 @@ namespace FullStackRecipeApp.Models
         public int RecipeID { get; set; }
         [Required]
         public int MeasurementID { get; set; }
-        public double Amount { get; set; }
+        public double? Amount { get; set; }
         
         public Recipe Recipe { get; set; }
         public Ingredient Ingredient { get; set; }
         public Unit Measurement { get; set; }
+
     }
 }

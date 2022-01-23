@@ -7,9 +7,9 @@
 
 <h1 class="page-headers">Ingredienser</h1>
 
-@if (Model.IsLoggedIn)
+@if (Model.AccessControl.IsLoggedIn())
 {
-    <div class="frontpage-section">
+    <div class="frontpage-section create-new-button">
 
         <a asp-page="Create">Skapa ny ingrediens</a>
     </div>

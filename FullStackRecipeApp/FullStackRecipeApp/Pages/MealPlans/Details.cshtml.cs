@@ -22,7 +22,11 @@ namespace FullStackRecipeApp.Pages.MealPlans
             this.AccessControl = accessControl;
         }
 
+        public IDictionary<string, Dictionary<string, double?>> ShoppingList;
         public MealPlan MealPlan { get; set; }
+        public List<RecipeMealPlan> PlannedMeals { get; set; }
+
+        public List<WeekDay> WeekDays { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,7 +38,58 @@ namespace FullStackRecipeApp.Pages.MealPlans
             MealPlan = await database.MealPlan
                 .Include(m => m.Meals)
                 .ThenInclude(m => m.Recipe)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .ThenInclude(r => r.Quantities)
+                .ThenInclude(q => q.Ingredient)                
+                .FirstAsync(m => m.ID == id);
+
+            PlannedMeals = MealPlan.Meals.ToList();
+
+            var mealPlanIngredients = await database.RecipeMealPlan
+                .Where(r => r.MealPlanID == MealPlan.ID)
+                .Include(m => m.Recipe)
+                .ThenInclude(r => r.Quantities)
+                .ThenInclude(q => q.Measurement)
+                .Select(m => m.Recipe)
+                .Select(r => r.Quantities)                
+                .ToListAsync();
+            
+            ShoppingList = new Dictionary<string, Dictionary<string, double?>>();
+
+            foreach (var recipeIngredients in mealPlanIngredients)
+            {                
+                if (recipeIngredients.Count < 1)
+                {
+                    break;
+                }
+
+                foreach (var recipeIngredient in recipeIngredients)
+                {
+                    var ingredient = recipeIngredient.Ingredient.Name;
+                    var measurement = recipeIngredient.Measurement.Name;
+                    var amount = recipeIngredient.Amount;
+                    if (ShoppingList.ContainsKey(ingredient))
+                    {
+                        var amountDict = ShoppingList[ingredient];
+                        if (amountDict.ContainsKey(measurement))
+                        {
+                            amountDict[measurement] += amount;
+                        }
+                        else
+                        {
+                            amountDict[measurement] = amount;
+                        }
+                    }
+                    else
+                    {
+                        ShoppingList[ingredient] = new Dictionary<string, double?>
+                        {
+                            [measurement] = amount
+                        };
+                    }
+                }
+            }
+
+            WeekDays = PlannedMeals.Select(m => m.WeekDay).Distinct().OrderBy(w => w).ToList();
 
             if (MealPlan == null)
             {
@@ -42,5 +97,6 @@ namespace FullStackRecipeApp.Pages.MealPlans
             }
             return Page();
         }
+        
     }
 }

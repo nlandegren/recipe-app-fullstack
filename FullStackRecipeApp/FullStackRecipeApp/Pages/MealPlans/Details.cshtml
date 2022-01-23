@@ -9,26 +9,60 @@
 
 <div>
     <hr />
-    @foreach (var meal in Model.MealPlan.Meals)
+    @foreach (var day in Model.WeekDays)
     {
 
         <dl>
             <dt>
-                @meal.WeekDay
+                @day
             </dt>
-            <dd>
-                <a asp-page="../Recipes/Details"  asp-route-id="@meal.RecipeID">@meal.Recipe.Name</a>    
-            </dd>
+            @foreach (var meal in @Model.PlannedMeals.Where(m => m.WeekDay == day).ToList())
+            {
+                <dd>
+                    <a asp-page="../Recipes/Details" asp-route-id="@meal.RecipeID">
+                        @meal.Recipe.Name
+                    </a>
+                </dd>
+            }
         </dl>
     }
 </div>
+
+<h2 class="page-headers">Inköpslista</h2>
+
+@if (Model.ShoppingList != null)
+{
+<dl>
+
+    @foreach (var item in Model.ShoppingList)
+    {
+        <dt>@item.Key</dt>
+        foreach (var amount in item.Value)
+        {
+            <dd>
+                @amount.Value @amount.Key
+            </dd>
+            
+        }
+
+    }
+</dl>
+
+}
+
+
+
+
+
+
+
 @if (Model.AccessControl.IsLoggedIn())
 {
-<div class="bottom-buttons">
-    <a asp-page="./Index">Tillbaka till planeringar</a>
-    <a asp-page="./Edit" asp-route-id="@Model.MealPlan.ID">Redigera planering</a>
-    <a asp-page="./Delete" asp-route-id="@Model.MealPlan.ID">Ta bort planering</a>
-</div>
+    <div class="bottom-buttons">
+        <a asp-page="./Index">Tillbaka till planeringar</a>
+        <a asp-page="./Edit" asp-route-id="@Model.MealPlan.ID">Redigera planering</a>
+        <a asp-page="./Delete" asp-route-id="@Model.MealPlan.ID">Ta bort planering</a>
+    </div>
 }
 else
 {

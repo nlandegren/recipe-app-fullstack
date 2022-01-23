@@ -5,12 +5,16 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Redigera recept</h1>
+<h1 class="page-headers">Redigera recept</h1>
 
 <hr />
 
 <form method="post">
+
     <div class="edit-form-container">
+        <input type="hidden" asp-for="Recipe.UserID" />
+        <input type="hidden" asp-for="Recipe.ID" />
+
         <div asp-validation-summary="ModelOnly"></div>
         <label asp-for="Recipe.Name">Namn</label>
         <textarea asp-for="Recipe.Name"></textarea>
@@ -19,37 +23,65 @@
         <textarea asp-for="Recipe.Description"></textarea>
 
         <label asp-for="Recipe.Instructions">Instruktioner: </label>
-        <textarea asp-for="Recipe.Instructions"></textarea>
+        <textarea onkeyup="textAreaAdjust(this)" asp-for="Recipe.Instructions"></textarea>
 
         <label asp-for="Recipe.MealCategory">Kategori: </label>
         <select asp-for="Recipe.MealCategory" asp-items="Html.GetEnumSelectList<Models.MealCategory>()">
-            <option value="" disabled selected>Välj kategori</option>
+            <option value="" disabled selected>--Välj kategori--</option>
         </select>
     </div>
+
 
     <hr />
-    <p>Lägg till ingrediens</p>
-
-    @* Make this cloneable, implement functionality *@
+    <h3 class="page-headers">Ny ingrediens</h3>
 
     <div class="ingredient-div">
-        <select name="SelectedIngredientIDs" asp-items="Model.IngredientOptions">
-            <option value="" disabled selected>Välj ingrediens</option>
+        <select name="NewIngredientID" asp-items="Model.IngredientOptions">
+            <option value="0" selected>--Välj ingrediens--</option>
         </select>
-        <select name="SelectedMeasurementIDs" asp-items="Model.MeasurementOptions">
-            <option value="" disabled selected>Välj enhet</option>
+        <select name="NewMeasurementID" asp-items="Model.MeasurementOptions">
+            <option value="0" selected>--Välj enhet--</option>
         </select>
-        <label asp-for="Quantity.Amount">Välj mängd</label>
-        <input class="edit-input" name="SelectedAmounts" asp-for="Quantity.Amount" />
-        <label>Ta bort ingrediens?</label>
-        <input type="checkbox" />
+        <label asp-for="Quantity.Amount"></label>
+        <input class="edit-input" name="NewAmountID" asp-for="Quantity.Amount" value="0" placeholder="Mata in mängd" />
+        <input type="submit" name="new-ingredient" value="Lägg till" />
+        <span asp-validation-for="Quantity"></span>
     </div>
 
-    <div>
-        <input type="submit" value="Spara" />
+
+    <hr />
+
+    <h3 class="page-headers">Ingredienser</h3>
+
+    @foreach (var recipeIngredient in Model.RecipeIngredients)
+    {
+        <div class="ingredient-div">
+            <select name="SelectedIngredientIDs" asp-items="Model.IngredientOptions">
+                <option value="@recipeIngredient.Ingredient.ID" selected>@recipeIngredient.Ingredient.Name</option>
+            </select>
+            <select name="SelectedMeasurementIDs" asp-items="Model.MeasurementOptions">
+                <option value="@recipeIngredient.Measurement.ID" selected>@recipeIngredient.Measurement.Name</option>
+            </select>
+            <label asp-for="Quantity.Amount"></label>
+            <input class="edit-input" name="SelectedAmounts" asp-for="Quantity.Amount" value="@recipeIngredient.Amount" />
+            <button asp-page-handler="delete" asp-route-recipeID="@Model.Recipe.ID" asp-route-ingredientID="@recipeIngredient.IngredientID">Ta bort</button>
+        </div>
+    }
+
+    <div class="edit-form-container">
+        <input type="submit" name="name" value="Spara receptet" />
+        <div asp-validation-summary="All"></div>
     </div>
-    <div asp-validation-summary="All"></div>
 </form>
+
+
+
+
+
+
+
+
+
 
 <div class="bottom-buttons">
     <a asp-page="./Index">Tillbaka till alla recept</a>

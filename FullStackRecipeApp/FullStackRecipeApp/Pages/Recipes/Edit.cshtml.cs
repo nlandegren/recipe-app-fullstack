@@ -14,15 +14,22 @@ namespace FullStackRecipeApp.Pages.Recipes
     public class EditModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public EditModel(RecipeDbContext context, AccessControl accessControl)
         {
-            database = context;
-            this.accessControl = accessControl;
+            database = context;            
+            AccessControl = accessControl;
         }
 
-        public bool IsLoggedIn { get; set; }
+
+        [BindProperty]
+        public int NewIngredientID { get; set; }
+
+        [BindProperty]
+        public int NewMeasurementID { get; set; }
+        [BindProperty]
+        public int NewAmountID { get; set; }
 
         [BindProperty]
         public IList<int> SelectedIngredientIDs { get; set; }
@@ -45,11 +52,19 @@ namespace FullStackRecipeApp.Pages.Recipes
         public List<SelectListItem> MeasurementOptions { get; set; }
 
 
+        private void CreateEmptyRecipe()
+        {
+            Recipe = new Recipe
+            {
+                UserID = AccessControl.LoggedInUserID
+            };
+        }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            CreateEmptyRecipe();
 
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            if (!AccessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -58,17 +73,19 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            Recipe = await database.Recipe
-                .Include(r => r.Quantities)
-                .FirstOrDefaultAsync(m => m.ID == id);
-
+            Recipe = await database.Recipe.FirstOrDefaultAsync(m => m.ID == id);
             
-            if (!accessControl.UserHasAccess(Recipe))
+            
+            if (!AccessControl.UserHasAccess(Recipe))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
 
-            RecipeIngredients = Recipe.Quantities.ToList();
+            RecipeIngredients = await database.Quantity
+                .Include(q => q.Ingredient)
+                .Include(q => q.Measurement)
+                .Where(q => q.RecipeID == id)
+                .ToListAsync();
                 
 
             if (Recipe == null)
@@ -76,12 +93,17 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return NotFound();
             }
 
-            IngredientOptions = await database.Ingredient.Select(i =>
+            // Only let user pick ingredients that are not currently in the recipe.
+            var allowedIngredients = await database.Ingredient
+                .Where(i => !i.Quantities.Any(q => q.RecipeID == Recipe.ID))         
+                .ToListAsync();
+                
+            IngredientOptions = allowedIngredients.Select(i =>
               new SelectListItem
               {
                   Value = i.ID.ToString(),
                   Text = i.Name
-              }).ToListAsync();
+              }).ToList();
 
             MeasurementOptions = await database.Unit.Select(i =>
             new SelectListItem
@@ -95,30 +117,68 @@ namespace FullStackRecipeApp.Pages.Recipes
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Recipe recipe)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Recipe))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
-
-            //Recipe.UserID = accessControl.LoggedInUserID;
-            //ModelState.Remove("Recipe.UserID");
-
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            if (!accessControl.UserHasAccess(Recipe))
+            await SaveRecipe(recipe);
+
+            try
             {
-                return StatusCode(401, "Oops! You do not have access to this page!");
+                await database.SaveChangesAsync();
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RecipeExists(Recipe.ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToPage("./Edit", new { id = Recipe.ID });
+        }
+
+        public async Task<IActionResult> OnPostDelete(int ingredientID, int recipeID)
+        {
+
+            await SaveRecipe(Recipe);
+
+            var quantity = await database.Quantity
+                .Where(q => q.IngredientID == ingredientID && q.RecipeID == recipeID)
+                .SingleOrDefaultAsync();
+
+            database.Quantity.Remove(quantity);
+            await database.SaveChangesAsync();
+
+            return RedirectToPage("./Edit", new { id = recipeID });
+        }
+
+        private async Task<IActionResult> SaveRecipe(Recipe recipe)
+        {
+
+
+            Recipe = recipe;
+
             database.Attach(Recipe).State = EntityState.Modified;
 
+            RecipeIngredients = await database.Quantity
+                .Include(q => q.Ingredient)
+                .Include(q => q.Measurement)
+                .Where(q => q.RecipeID == Recipe.ID)
+                .ToListAsync();
 
-            // Functionality for adding new ingredients
+            // Save edited ingredient fields
 
             for (int i = 0; i < SelectedIngredientIDs.Count; i++)
             {
@@ -137,6 +197,49 @@ namespace FullStackRecipeApp.Pages.Recipes
                 // Get amount
                 double amount = SelectedAmounts[i];
 
+                Quantity = RecipeIngredients[i];
+
+                database.Quantity.Remove(Quantity);
+                await database.SaveChangesAsync();
+
+                Quantity = new Quantity
+                {
+                    Recipe = Recipe,
+                    Ingredient = ingredient,
+                    Measurement = unit,
+                    Amount = amount
+                };
+
+                database.Quantity.Add(Quantity);
+
+                await database.SaveChangesAsync();
+            }
+
+            // If place holder fields are posted then stop.
+            // Tried IValidatableObject on Quantity but causes null reference exception.
+            if (NewIngredientID == 0 || NewMeasurementID == 0 || NewAmountID == 0)
+            {
+                return RedirectToPage("./Edit", new { id = Recipe.ID });
+            }
+
+            // To avoid duplicate errors check if ingredient already exists in recipe.
+            if (!database.Quantity.Any(q => q.IngredientID == NewIngredientID && q.RecipeID == Recipe.ID))
+            {
+                // Get ingredient
+                int ingredientID = NewIngredientID;
+                var ingredient = await database.Ingredient
+                    .Where(i => i.ID == ingredientID)
+                    .SingleAsync();
+
+                // Get unit of measurement
+                var unitID = NewMeasurementID;
+                var unit = await database.Unit
+                    .Where(m => m.ID == unitID)
+                    .SingleAsync();
+
+                // Get amount
+                double amount = NewAmountID;
+
                 Quantity = new Quantity
                 {
                     Recipe = Recipe,
@@ -145,29 +248,11 @@ namespace FullStackRecipeApp.Pages.Recipes
                     Amount = amount
                 };
                 database.Quantity.Add(Quantity);
+
                 await database.SaveChangesAsync();
             }
 
-
-
-
-            try
-            {
-                await database.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RecipeExists(Recipe.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Edit", new { id = Recipe.ID });
         }
 
         private bool RecipeExists(int id)

@@ -12,7 +12,28 @@
 
     <div>
         <hr />
-        @foreach (var meal in Model.MealPlan.Meals)
+
+
+        @foreach (var day in Model.WeekDays)
+        {
+
+            <dl>
+                <dt>
+                    @day
+                </dt>
+                @foreach (var meal in @Model.PlannedMeals.Where(m => m.WeekDay == day).ToList())
+                {
+                    <dd>
+                        <a asp-page="../Recipes/Details" asp-route-id="@meal.RecipeID">
+                            @meal.Recipe.Name
+                        </a>
+                    </dd>
+                }
+            </dl>
+        }
+
+
+        @*@foreach (var meal in Model.MealPlan.Meals)
         {
 
             <dl>
@@ -23,7 +44,7 @@
                     <a asp-page="../Recipes/Details" asp-route-id="@meal.RecipeID">@meal.Recipe.Name</a>
                 </dd>
             </dl>
-        }
+        }*@
     </div>
 
     <h2 class="page-headers">Vill du verkligen ta bort planeringen?</h2>

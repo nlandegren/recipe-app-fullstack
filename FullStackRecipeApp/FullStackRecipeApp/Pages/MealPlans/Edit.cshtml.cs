@@ -14,31 +14,44 @@ namespace FullStackRecipeApp.Pages.MealPlans
     public class EditModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public EditModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
-        public bool IsLoggedIn { get; set; }
+
+        [BindProperty]
+        public IList<int> SelectedWeekDayIDs { get; set; }
+
+        [BindProperty]
+        public IList<int> SelectedRecipeIDs { get; set; }
+        
+        [BindProperty]
+        public int NewWeekDayID { get; set; }
+        [BindProperty]
+        public int NewRecipeID { get; set; }
+
 
         [BindProperty]
         public MealPlan MealPlan { get; set; }
-        
+
         [BindProperty]
         public int RecipeID { get; set; }
         [BindProperty]
         public WeekDay WeekDay { get; set; }
-        
+
+        public List<RecipeMealPlan> PlannedMeals { get; set; }
+
+
         public RecipeMealPlan RecipeMealPlan { get; set; }
 
-        public List<SelectListItem> Options { get; set; }
+        public List<SelectListItem> RecipeOptions { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            if (!AccessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -47,14 +60,19 @@ namespace FullStackRecipeApp.Pages.MealPlans
                 return NotFound();
             }
 
-            MealPlan = await database.MealPlan.Where(m => m.ID == id).SingleAsync();
+            MealPlan = await database.MealPlan
+                .Include(m => m.Meals)
+                .ThenInclude(m => m.Recipe)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            PlannedMeals = MealPlan.Meals.ToList();
 
             if (MealPlan == null)
             {
                 return NotFound();
             }
 
-            Options = await database.Recipe.Select(r =>
+            RecipeOptions = await database.Recipe.Select(r =>
                   new SelectListItem
                   {
                       Value = r.ID.ToString(),
@@ -66,31 +84,17 @@ namespace FullStackRecipeApp.Pages.MealPlans
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(MealPlan mealplan)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            if (!AccessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
             if (!ModelState.IsValid)
             {
                 return Page();
+
             }
-
-            var recipe = await database.Recipe.Where(r => r.ID == RecipeID).SingleAsync();
-
-            RecipeMealPlan = new RecipeMealPlan
-            {
-                WeekDay = WeekDay,
-                Recipe = recipe,
-                MealPlan = MealPlan
-            };
-
-            database.RecipeMealPlan.Add(RecipeMealPlan);                
-
-            database.Attach(MealPlan).State = EntityState.Modified;
-            
 
             try
             {
@@ -108,9 +112,96 @@ namespace FullStackRecipeApp.Pages.MealPlans
                 }
             }
 
-            
+            await SaveMealPlan(mealplan);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Edit", new { id = MealPlan.ID });
+        }
+
+
+        private async Task<IActionResult> SaveMealPlan(MealPlan mealPlan)
+        {
+
+            MealPlan = await database.MealPlan
+                .Include(m => m.Meals)
+                .ThenInclude(m => m.Recipe)
+                .FirstOrDefaultAsync(m => m.ID == mealPlan.ID);
+
+            PlannedMeals = MealPlan.Meals.ToList();
+
+            MealPlan.Name = mealPlan.Name;
+            MealPlan.WeekNumber = mealPlan.WeekNumber;
+            
+            await database.SaveChangesAsync();
+
+            // Save edited planned recipes
+
+            for (int i = 0; i < SelectedWeekDayIDs.Count; i++)
+            {
+                // Get weekday
+                int weekdayID = SelectedWeekDayIDs[i];
+                var weekday = (WeekDay)weekdayID;
+
+                // Get recipe
+                var recipeID = SelectedRecipeIDs[i];
+                var recipe = await database.Recipe
+                    .Where(r => r.ID == recipeID)
+                    .SingleAsync();
+
+                // Get recipe in join table RecipeMealPlan
+                RecipeMealPlan = PlannedMeals[i];
+
+                // Update values in case they have changed
+                RecipeMealPlan.Recipe = recipe;
+                RecipeMealPlan.WeekDay = weekday;
+                RecipeMealPlan.MealPlan = MealPlan;
+
+                await database.SaveChangesAsync();
+            }
+
+            // If place holder fields are posted then stop.
+            if (NewWeekDayID == 0 || NewRecipeID == 0)
+            {
+                return RedirectToPage("./Edit", new { id = MealPlan.ID });
+            }
+            else
+            {
+                // Get weekday
+                var weekday = (WeekDay)NewWeekDayID;
+
+                // Get recipe
+                var recipeID = NewRecipeID;
+                var recipe = await database.Recipe
+                    .Where(r => r.ID == recipeID)
+                    .SingleAsync();
+
+                RecipeMealPlan = new RecipeMealPlan
+                {
+                    Recipe = recipe,
+                    WeekDay = weekday,
+                    MealPlan = MealPlan
+                };
+
+                database.RecipeMealPlan.Add(RecipeMealPlan);
+
+                await database.SaveChangesAsync();
+            }
+
+            return RedirectToPage("./Edit", new { id = MealPlan.ID });
+        }
+
+        public async Task<IActionResult> OnPostDelete(int recipeMealPlanID, MealPlan mealPlan)
+        {
+
+            await SaveMealPlan(mealPlan);
+
+            var recipeMealPlan = await database.RecipeMealPlan
+                .Where(m => m.ID == recipeMealPlanID)
+                .SingleOrDefaultAsync();
+
+            database.RecipeMealPlan.Remove(recipeMealPlan);
+            await database.SaveChangesAsync();
+
+            return RedirectToPage("./Edit", new { id = MealPlan.ID });
         }
 
         private bool MealPlanExists(int id)

@@ -41,16 +41,8 @@ namespace FullStackRecipeApp.Pages.Recipes
             {
                 return NotFound();
             }
-            // Not working as intended
-            //Recipe.Instructions = InsertNewLines(Recipe.Instructions);
 
             return Page();
-        }
-
-        public string InsertNewLines(string instructions)
-        {
-
-            return Regex.Replace(instructions, @"\d\.", @"$&\n");
         }
     }
 }

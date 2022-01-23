@@ -9,19 +9,12 @@ namespace FullStackRecipeApp.Models
 {
     public enum WeekDay
     {
-        [Display(Name = "Måndag")]
         Monday,
-        [Display(Name = "Tisdag")]
         Tuesday,
-        [Display(Name = "Onsdag")]
         Wednesday,
-        [Display(Name = "Torsdag")]
         Thursday,
-        [Display(Name = "Fredag")]
         Friday,
-        [Display(Name = "Lördag")]
         Saturday,
-        [Display(Name = "Söndag")]
         Sunday,
     }
     public class MealPlan
@@ -32,9 +25,8 @@ namespace FullStackRecipeApp.Models
         public int WeekNumber { get; set; }
 
         public List<RecipeMealPlan> Meals { get; set; }
-        //[Required]
+        // make not foreign key
         //public string UserID { get; set; }
-        //public IdentityUser User { get; set; }
     }
 
     public class RecipeMealPlan

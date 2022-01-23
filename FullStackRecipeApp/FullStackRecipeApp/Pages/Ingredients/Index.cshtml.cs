@@ -35,15 +35,14 @@ namespace FullStackRecipeApp.Pages.Ingredients
     public class IndexModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public IndexModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
 
-        public bool IsLoggedIn { get; set; }
 
         public IList<Ingredient> Ingredients { get;set; }
         
