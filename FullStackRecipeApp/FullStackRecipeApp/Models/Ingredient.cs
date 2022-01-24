@@ -32,8 +32,8 @@ namespace FullStackRecipeApp.Models
         public DietCategory DietCategory { get; set; }
         public List<Quantity> Quantities { get; set; }
 
-        //[Required]
-        //public string UserID { get; set; }
+        
+        public string UserID { get; set; }
         //public IdentityUser User { get; set; }
     }
 }

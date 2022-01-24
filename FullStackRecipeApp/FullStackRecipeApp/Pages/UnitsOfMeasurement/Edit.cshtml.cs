@@ -14,21 +14,22 @@ namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
     public class EditModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public EditModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
-        public bool IsLoggedIn { get; set; }
+        
         [BindProperty]
         public Unit Unit { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            Unit = await database.Unit.FirstOrDefaultAsync(m => m.ID == id);
+
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Unit))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -36,8 +37,6 @@ namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
             {
                 return NotFound();
             }
-
-            Unit = await database.Unit.FirstOrDefaultAsync(m => m.ID == id);
 
             if (Unit == null)
             {
@@ -48,10 +47,11 @@ namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Unit unit)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            Unit = await database.Unit.FirstOrDefaultAsync(m => m.ID == unit.ID);
+
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Unit))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }

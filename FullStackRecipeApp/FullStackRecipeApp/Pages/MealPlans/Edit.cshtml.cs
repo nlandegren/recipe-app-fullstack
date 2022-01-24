@@ -51,7 +51,16 @@ namespace FullStackRecipeApp.Pages.MealPlans
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (!AccessControl.IsLoggedIn())
+
+            MealPlan = await database.MealPlan
+                .Include(m => m.Meals)
+                .ThenInclude(m => m.Recipe)
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (MealPlan == null)
+            {
+                return NotFound();
+            }
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(MealPlan))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -60,17 +69,9 @@ namespace FullStackRecipeApp.Pages.MealPlans
                 return NotFound();
             }
 
-            MealPlan = await database.MealPlan
-                .Include(m => m.Meals)
-                .ThenInclude(m => m.Recipe)
-                .FirstOrDefaultAsync(m => m.ID == id);
-
             PlannedMeals = MealPlan.Meals.ToList();
 
-            if (MealPlan == null)
-            {
-                return NotFound();
-            }
+
 
             RecipeOptions = await database.Recipe.Select(r =>
                   new SelectListItem
@@ -84,9 +85,14 @@ namespace FullStackRecipeApp.Pages.MealPlans
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(MealPlan mealplan)
+        public async Task<IActionResult> OnPostAsync(MealPlan mealPlan)
         {
-            if (!AccessControl.IsLoggedIn())
+            MealPlan = await database.MealPlan
+                .Include(m => m.Meals)
+                .ThenInclude(m => m.Recipe)
+                .FirstOrDefaultAsync(m => m.ID == mealPlan.ID);
+
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(MealPlan))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -112,7 +118,7 @@ namespace FullStackRecipeApp.Pages.MealPlans
                 }
             }
 
-            await SaveMealPlan(mealplan);
+            await SaveMealPlan(mealPlan);
 
             return RedirectToPage("./Edit", new { id = MealPlan.ID });
         }

@@ -69,6 +69,7 @@ namespace FullStackRecipeApp.Models
         public int ID { get; set; }
         [Required]
         public string Name { get; set; }
+        public string UserID { get; set; }
     }
 
     [Index(nameof(IngredientID), nameof(RecipeID), IsUnique = true)]

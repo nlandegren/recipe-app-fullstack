@@ -14,12 +14,12 @@ namespace FullStackRecipeApp.Pages
     public class AddSampleDataModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        private readonly AccessControl AccessControl;
 
         public AddSampleDataModel(RecipeDbContext database, AccessControl accessControl)
         {
             this.database = database;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
         public async Task<IActionResult> OnGetAsync()
         {
@@ -103,9 +103,7 @@ namespace FullStackRecipeApp.Pages
             var mealplans = new List<MealPlan>();
             var rnd = new Random();
             
-
-
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < rnd.Next(5, 16); i++)
             {
                 // WeekNumber random int from 1 to 52
                 int weeknumber = rnd.Next(1, 53);
@@ -114,10 +112,11 @@ namespace FullStackRecipeApp.Pages
                 {
                     Name = $"Exempelplan nummer {i + 1}",
                     WeekNumber = weeknumber,
-                    Meals = new List<RecipeMealPlan>()
+                    Meals = new List<RecipeMealPlan>(),
+                    UserID = AccessControl.LoggedInUserID
                 };
                 // grab 7 random recipes from db
-                for (int j = 0; j < 7; j++)
+                for (int j = 0; j < rnd.Next(5, 11); j++)
                 {
                     int toSkip = rnd.Next(1, database.Recipe.Count());
                     var recipe = await database.Recipe.Skip(toSkip).FirstAsync();
@@ -163,7 +162,8 @@ namespace FullStackRecipeApp.Pages
                 {
                     Name = name,
                     FoodCategory = foodCategory,
-                    DietCategory = dietCategory
+                    DietCategory = dietCategory,
+                    UserID = AccessControl.LoggedInUserID
                 };
                 ingredientsToAdd.Add(ingredient);
             }
@@ -192,7 +192,7 @@ namespace FullStackRecipeApp.Pages
                     Description = description,
                     Instructions = instructions,
                     MealCategory = mealCategory,
-                    UserID = accessControl.LoggedInUserID
+                    UserID = AccessControl.LoggedInUserID
                 };
                 recipesToAdd.Add(recipe);
             }
@@ -205,7 +205,10 @@ namespace FullStackRecipeApp.Pages
             var unitsToAdd = new List<Unit>();
             foreach (var line in lines)
             {                
-                var unit = new Unit {Name = line.Trim()};
+                var unit = new Unit {
+                    Name = line.Trim(),
+                    UserID = AccessControl.LoggedInUserID
+                };
                 unitsToAdd.Add(unit);
             }
             return unitsToAdd;

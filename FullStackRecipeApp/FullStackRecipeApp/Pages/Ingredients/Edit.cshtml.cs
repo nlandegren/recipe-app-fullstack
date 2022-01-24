@@ -14,12 +14,12 @@ namespace FullStackRecipeApp.Pages.Ingredients
     public class EditModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        private readonly AccessControl AccessControl;
 
         public EditModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
 
         public bool IsLoggedIn { get; set; }
@@ -31,8 +31,9 @@ namespace FullStackRecipeApp.Pages.Ingredients
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            Ingredient = await database.Ingredient.FirstOrDefaultAsync(m => m.ID == id);
+            
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Ingredient))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -41,7 +42,7 @@ namespace FullStackRecipeApp.Pages.Ingredients
                 return NotFound();
             }
 
-            Ingredient = await database.Ingredient.FirstOrDefaultAsync(m => m.ID == id);
+            
 
             if (Ingredient == null)
             {
@@ -54,8 +55,7 @@ namespace FullStackRecipeApp.Pages.Ingredients
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Ingredient))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }

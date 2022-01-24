@@ -63,23 +63,23 @@ namespace FullStackRecipeApp.Pages.Recipes
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             CreateEmptyRecipe();
-
-            if (!AccessControl.IsLoggedIn())
-            {
-                return StatusCode(401, "Oops! You do not have access to this page!");
-            }
             if (id == null)
             {
                 return NotFound();
             }
-
+            
             Recipe = await database.Recipe.FirstOrDefaultAsync(m => m.ID == id);
             
-            
-            if (!AccessControl.UserHasAccess(Recipe))
+            if (Recipe == null)
+            {
+                return NotFound();
+            }
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Recipe))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
+
+           
 
             RecipeIngredients = await database.Quantity
                 .Include(q => q.Ingredient)
@@ -88,10 +88,7 @@ namespace FullStackRecipeApp.Pages.Recipes
                 .ToListAsync();
                 
 
-            if (Recipe == null)
-            {
-                return NotFound();
-            }
+
 
             // Only let user pick ingredients that are not currently in the recipe.
             var allowedIngredients = await database.Ingredient

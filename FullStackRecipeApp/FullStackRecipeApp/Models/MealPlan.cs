@@ -25,8 +25,8 @@ namespace FullStackRecipeApp.Models
         public string Name { get; set; }
         public int WeekNumber { get; set; }
         public List<RecipeMealPlan> Meals { get; set; }
-        // make not foreign key
-        //public string UserID { get; set; }
+        
+        public string UserID { get; set; }
     }
 
     public class RecipeMealPlan

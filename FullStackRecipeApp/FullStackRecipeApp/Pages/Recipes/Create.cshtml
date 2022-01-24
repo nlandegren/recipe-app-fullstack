@@ -31,6 +31,22 @@
         <option value="" disabled selected>Välj kategori</option>
     </select>
 
+    <label asp-for="Recipe.Difficulty">Svårighetsgrad</label>
+    <select asp-for="Recipe.Difficulty">
+        @for (int i = 1; i < 6; i++)
+        {
+            if (@Model.Recipe.Difficulty == i)
+            {
+                <option value="@i" selected>@i</option>
+            }
+            else
+            {
+                <option value="@i">@i</option>
+            }
+
+        }
+    </select>
+
     <div id="submit-button-container">
         <input type="submit" value="Skapa recept" />
     </div>

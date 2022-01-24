@@ -13,12 +13,12 @@ namespace FullStackRecipeApp.Pages.MealPlans
     public class DeleteModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public DeleteModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
         public bool IsLoggedIn { get; set; }
 
@@ -32,8 +32,13 @@ namespace FullStackRecipeApp.Pages.MealPlans
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+
+            MealPlan = await database.MealPlan
+                .Include(m => m.Meals)
+                .ThenInclude(m => m.Recipe)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(MealPlan))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -41,12 +46,6 @@ namespace FullStackRecipeApp.Pages.MealPlans
             {
                 return NotFound();
             }
-
-            MealPlan = await database.MealPlan
-                .Include(m => m.Meals)
-                .ThenInclude(m => m.Recipe)
-                .FirstOrDefaultAsync(m => m.ID == id);
-
 
             if (MealPlan == null)
             {
@@ -67,17 +66,18 @@ namespace FullStackRecipeApp.Pages.MealPlans
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            MealPlan = await database.MealPlan.FindAsync(id);
+
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(MealPlan))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            MealPlan = await database.MealPlan.FindAsync(id);
 
             if (MealPlan != null)
             {

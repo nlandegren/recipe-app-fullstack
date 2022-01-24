@@ -31,8 +31,7 @@
     </dl>
 </div>
 
-@*UserID in Ingredient not implemented*@
-@if (Model.AccessControl.IsLoggedIn() @*&& Model.AccessControl.UserHasAccess(Model.Ingredient)*@)
+@if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(Model.Ingredient))
 {
 <div class="bottom-buttons">
     <a asp-page="./Index">Tillbaka till ingredienser</a>

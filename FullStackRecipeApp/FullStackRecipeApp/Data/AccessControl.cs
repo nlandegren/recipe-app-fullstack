@@ -26,10 +26,18 @@ namespace FullStackRecipeApp.Data
             return recipe.UserID == LoggedInUserID;
         }
 
-        // UserID in Ingredient not implemented
-        //public bool UserHasAccess(Ingredient ingredient)
-        //{
-        //    return ingredient.UserID == LoggedInUserID;
-        //}
+        public bool UserHasAccess(Ingredient ingredient)
+        {
+            return ingredient.UserID == LoggedInUserID;
+        }
+
+        public bool UserHasAccess(MealPlan mealPlan)
+        {
+            return mealPlan.UserID == LoggedInUserID;
+        }
+        public bool UserHasAccess(Unit unit)
+        {
+            return unit.UserID == LoggedInUserID;
+        }
     }
 }

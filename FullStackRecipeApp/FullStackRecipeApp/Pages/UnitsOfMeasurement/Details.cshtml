@@ -20,7 +20,7 @@
 </div>
 <div class="bottom-buttons">
 
-    @if (Model.AccessControl.IsLoggedIn())
+    @if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(Model.Unit))
     {
         <a asp-page="./Index">Tillbaka till enheter</a>
         <a asp-page="./Edit" asp-route-id="@Model.Unit.ID">Redigera enhet</a>

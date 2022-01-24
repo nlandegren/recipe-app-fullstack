@@ -56,7 +56,7 @@
 
 
 
-@if (Model.AccessControl.IsLoggedIn())
+@if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(Model.MealPlan))
 {
     <div class="bottom-buttons">
         <a asp-page="./Index">Tillbaka till planeringar</a>

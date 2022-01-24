@@ -13,12 +13,12 @@ namespace FullStackRecipeApp.Pages.Ingredients
     public class DeleteModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public DeleteModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
 
         public bool IsLoggedIn { get; set; }
@@ -27,8 +27,9 @@ namespace FullStackRecipeApp.Pages.Ingredients
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            Ingredient = await database.Ingredient.FirstOrDefaultAsync(m => m.ID == id);
+
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Ingredient))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -36,8 +37,6 @@ namespace FullStackRecipeApp.Pages.Ingredients
             {
                 return NotFound();
             }
-
-            Ingredient = await database.Ingredient.FirstOrDefaultAsync(m => m.ID == id);
 
             if (Ingredient == null)
             {
@@ -48,8 +47,7 @@ namespace FullStackRecipeApp.Pages.Ingredients
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Ingredient))
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }

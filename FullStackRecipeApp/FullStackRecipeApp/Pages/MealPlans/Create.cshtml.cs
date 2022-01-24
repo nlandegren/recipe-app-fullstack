@@ -14,12 +14,12 @@ namespace FullStackRecipeApp.Pages.MealPlans
     public class CreateModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public CreateModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
         public bool IsLoggedIn { get; set; }
 
@@ -29,8 +29,8 @@ namespace FullStackRecipeApp.Pages.MealPlans
 
         public IActionResult OnGet()
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+
+            if (!AccessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -38,10 +38,9 @@ namespace FullStackRecipeApp.Pages.MealPlans
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(MealPlan mealPlan)
         {
-            IsLoggedIn = accessControl.IsLoggedIn();
-            if (!IsLoggedIn)
+            if (!AccessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -49,6 +48,9 @@ namespace FullStackRecipeApp.Pages.MealPlans
             {
                 return Page();
             }
+
+            MealPlan = mealPlan;
+            MealPlan.UserID = AccessControl.LoggedInUserID;
 
             await database.MealPlan.AddAsync(MealPlan);
             await database.SaveChangesAsync();
