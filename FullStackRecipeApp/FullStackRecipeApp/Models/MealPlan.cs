@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,6 @@ namespace FullStackRecipeApp.Models
         [Required]
         public string Name { get; set; }
         public int WeekNumber { get; set; }
-
         public List<RecipeMealPlan> Meals { get; set; }
         // make not foreign key
         //public string UserID { get; set; }
@@ -35,8 +35,7 @@ namespace FullStackRecipeApp.Models
         public int RecipeID { get; set; }
         public int MealPlanID { get; set; }
         public WeekDay WeekDay { get; set; }
-        public Recipe Recipe { get; set; }
-
+        public Recipe Recipe { get; set; }        
         public MealPlan MealPlan { get; set; }
     }
 }

@@ -55,6 +55,8 @@ namespace FullStackRecipeApp.Pages.MealPlans
             
             ShoppingList = new Dictionary<string, Dictionary<string, double?>>();
 
+            // This works but feels much too complicated
+
             foreach (var recipeIngredients in mealPlanIngredients)
             {                
                 if (recipeIngredients.Count < 1)

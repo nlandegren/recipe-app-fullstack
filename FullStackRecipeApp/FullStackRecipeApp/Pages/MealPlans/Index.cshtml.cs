@@ -28,40 +28,67 @@ namespace FullStackRecipeApp.Pages.MealPlans
         All,
         [Display(Name = "Lakto-ovo")]
         LactoOvo,
-        [Display(Name = "Vegan")]
-        Vegan,
-        [Display(Name = "Karnivor")]
-        Carnivore
+        Vegetarisk,
+        Karnivor,
+        Pesceterian
     }
     public class IndexModel : PageModel
     {
         private readonly RecipeDbContext database;
-        private readonly AccessControl accessControl;
+        public AccessControl AccessControl;
 
         public IndexModel(RecipeDbContext context, AccessControl accessControl)
         {
             database = context;
-            this.accessControl = accessControl;
+            this.AccessControl = accessControl;
         }
-
-        public bool IsLoggedIn { get; set; }
 
         public IList<MealPlan> MealPlans { get;set; }
 
         [FromQuery]
         public SortingKey SortingKey { get; set; }
         [FromQuery]
-        public FilterKey FilterKey { get; set; }
+        public DietCategory FilterKey { get; set; }
         [FromQuery]
         public string SearchTerm { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
-        {
-            IsLoggedIn = accessControl.IsLoggedIn();
+        {            
 
-            var query = database.MealPlan.
-                Include(m => m.Meals)
-                .AsNoTracking();
+            var query = database.MealPlan
+                    .Include(p => p.Meals)
+                    .AsNoTracking();
+
+
+            // Filter by diet
+            if (FilterKey != DietCategory.Karnivor)
+            {
+                if (FilterKey == DietCategory.Pesceterian)
+                {
+                    query = query
+                    .Where(p => !p.Meals
+                    .Any(m => m.Recipe.Quantities
+                    .Any(q => q.Ingredient.DietCategory == DietCategory.Karnivor)));
+                }
+                else if (FilterKey == DietCategory.LactoOvo)
+                {
+                    query = query
+                    .Where(p => !p.Meals
+                    .Any(m => m.Recipe.Quantities
+                    .Any(q => q.Ingredient.DietCategory == DietCategory.Karnivor ||
+                              q.Ingredient.DietCategory == DietCategory.Pesceterian)));
+                }
+                else if (FilterKey == DietCategory.Vegetarisk)
+                {
+                    query = query
+                    .Where(p => !p.Meals
+                    .Any(m => m.Recipe.Quantities
+                    .Any(q => q.Ingredient.DietCategory == DietCategory.Karnivor ||
+                              q.Ingredient.DietCategory == DietCategory.Pesceterian ||
+                              q.Ingredient.DietCategory == DietCategory.LactoOvo)));
+                }
+            }
+
 
             if (SearchTerm != null)
             {
@@ -82,7 +109,11 @@ namespace FullStackRecipeApp.Pages.MealPlans
                 query = query.OrderByDescending(m => m.Meals.Count);
             }
 
+
             MealPlans = await query.ToListAsync();
+
+
+
             return Page();
         }
     }

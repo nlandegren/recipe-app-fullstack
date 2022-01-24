@@ -127,7 +127,11 @@ namespace FullStackRecipeApp.Pages.Recipes
             {
                 return Page();
             }
-
+            RecipeIngredients = await database.Quantity
+                .Include(q => q.Ingredient)
+                .Include(q => q.Measurement)
+                .Where(q => q.RecipeID == recipe.ID)
+                .ToListAsync();
             await SaveRecipe(recipe);
 
             try

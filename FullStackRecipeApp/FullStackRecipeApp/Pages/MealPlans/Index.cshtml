@@ -8,7 +8,7 @@
 <h1 class="page-headers">Matplaneringar</h1>
 
 
-@if (Model.IsLoggedIn)
+@if (Model.AccessControl.IsLoggedIn())
 {
     <div class="frontpage-section create-new-button">
         <a asp-page="Create">Skapa ny planering</a>

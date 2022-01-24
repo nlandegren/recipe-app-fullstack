@@ -34,6 +34,7 @@ namespace FullStackRecipeApp
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<RecipeDbContext>();
             services.AddRazorPages();
+            services.AddControllers();
 
             services.AddHttpContextAccessor();
             services.AddTransient<AccessControl>();
@@ -65,6 +66,7 @@ namespace FullStackRecipeApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

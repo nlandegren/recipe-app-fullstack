@@ -10,6 +10,7 @@ namespace FullStackRecipeApp.Models
 
     public enum DietCategory
     {
+        All,
         [Display(Name = "Lakto-ovo")]
         LactoOvo,
         Vegetarisk,

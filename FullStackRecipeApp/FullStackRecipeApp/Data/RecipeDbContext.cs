@@ -21,7 +21,7 @@ namespace FullStackRecipeApp.Data
             base.OnModelCreating(builder);
             builder.Entity<Quantity>()
                 .HasKey(i => new { i.IngredientID, i.RecipeID });
-            
+
             builder.Entity<Recipe>()
                 .Property(r => r.MealCategory)
                 .HasConversion<string>();
@@ -33,6 +33,11 @@ namespace FullStackRecipeApp.Data
             builder.Entity<RecipeMealPlan>()
                 .Property(i => i.WeekDay)
                 .HasConversion<string>();
+
+            builder.Entity<Recipe>()
+                .Property(r => r.Difficulty)
+                .HasDefaultValue(1);
+
         }
 
         public DbSet<Recipe> Recipe { get; set; }

@@ -17,6 +17,8 @@
 * Ingredient
     * ~~Enum conversion on dietcategory
 
+* IMPROVEMENTS
+    * remove string conversions on enums, rename enum values
 
 ### Basic CRUD operations
 
@@ -28,7 +30,7 @@
         * Proper validation (data annotations on model)
     * ~~Delete~~
     * Edit         
-        * Edit/add/delete for each ingredient ingredients all ingredients
+        * ~~Edit/add/delete for each ingredient ingredients all ingredients~~
         * Proper validation (data annotations on model)
     * ~~Details~~
     * ~~Filter by meal category~~
@@ -41,15 +43,14 @@
     * ~~List~~
     * ~~Create~~
         * ~~Change description to food category~~
-        * Make dietcategory drop down
     * ~~Delete~~
     * ~~Edit~~
     * ~~Details~~
     * ~~Filter by diet~~
         * ~~Fix placeholder in drop down~~
     * ~~Sort by name or popularity~~
-        * Fix placeholder in drop down
-        * probably fix LINQ expression
+        * ~~Fix placeholder in drop down~~
+        * ~~probably fix LINQ expression~~
     * ~~Search by name~~
 
 
@@ -57,15 +58,17 @@
     * ~~List
     * ~~Create
         * ~~Associate plan with recipe.
-        * Make it so you can add multiple days and recipes at the same time in the same form.
+        * ~~Make it so you can add multiple days and recipes at the same time in the same form.~~
     * ~~Delete
     * Edit
-        * Fix so we can see all recipes and edit each.
-        * Edit adds new recipe??
-    * Details
-        * Group by week day
-    * Sort by week number
-    * Filter by diet category (majority of the meals need to be in a category)
+        * ~~Fix so we can see all recipes and edit each.~~
+    * ~~Details~~
+        * ~~Group by week day~~
+    * ~~Sort by week number~~
+    * ~~Filter by diet category~~
+
+
+
 
 
 ### Authorization
@@ -87,10 +90,53 @@
 ### ~~CSS~~
     * Tidy up if have time
 
+### BUGS
 
+    * cant add first weekday or ingredient because we skip index 0
 
 
 ## Graded VG
+
+A page that lets the user create a three course meal by choosing diet option for the whole meal and for each course entering key word search. The user may save the meal to local storage.
+
+* Go through the first assignment and the pixabay assignment and take notes.
+
+
+
+### Notes
+
+### User experience
+
+* Start page says: Generate meals with up to three courses!
+* User chooses what courses to include by checking or unchecking
+* User chooses what diet to filter by with drop down list
+* User enters keywords to search ingredients and recipes for
+* User may sort by difficulty and/or name
+
+### Database
+
+* ~~Add course column to Recipe.~~
+* ~~Add difficulty to recipe so that we can sort meals by total difficulty.~~
+* ~~make default value difficulty 1~~
+
+#### Sample data
+* Set course category on recipes
+* set difficulty on recipes
+* Add Recipes so that we have at least 1 recipe per difficulty
+* Add Recipes so that we have at least 1 recipe per course category
+* Generate some random plans
+
+### API
+
+* Make controller to get all recipes and their quantities.
+* Add sorting/filtering/searching to api calls.
+
+### Frontend
+
+* HTML
+* CSS
+* JavaScript
+
 
 
 
