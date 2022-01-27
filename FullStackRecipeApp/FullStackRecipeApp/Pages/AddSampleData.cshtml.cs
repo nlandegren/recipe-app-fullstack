@@ -185,13 +185,14 @@ namespace FullStackRecipeApp.Pages
                 string description = columns[1].Trim();
                 string instructions = columns[2].Trim();
                 var mealCategory = (MealCategory)Enum.Parse(typeof(MealCategory), columns[3]);
-
+                var courseCategory = (CourseCategory)int.Parse(columns[4].Trim());
                 var recipe = new Recipe
                 {
                     Name = name,
                     Description = description,
                     Instructions = instructions,
                     MealCategory = mealCategory,
+                    CourseCategory = courseCategory,
                     UserID = AccessControl.LoggedInUserID
                 };
                 recipesToAdd.Add(recipe);

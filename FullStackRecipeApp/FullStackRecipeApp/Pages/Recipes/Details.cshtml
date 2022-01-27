@@ -10,6 +10,10 @@
 
     <h1>@Html.DisplayFor(model => model.Recipe.Name)</h1>
 </div>
+<div class="recipe-description">
+    <h2>@Html.DisplayFor(model => model.Recipe.CourseCategory) | Svårighetsgrad: @Model.Recipe.Difficulty/5</h2>
+</div>
+
 <hr />
 
 <div class="recipe-description">
@@ -17,10 +21,7 @@
 </div>
 
 <hr />
-<div class="recipe-instructions">
 
-    <h2>Svårighetsgrad: @Model.Recipe.Difficulty/5</h2>
-</div>
 
 <div class="recipe-instructions">
 

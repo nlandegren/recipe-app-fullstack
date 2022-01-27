@@ -104,6 +104,8 @@ input[type=submit]:hover {
 
 .frontpage-grid{
     display:flex;
+    margin-top:20em;
+    margin-bottom:20em;
 }
 
 #website-title-container {
@@ -127,6 +129,7 @@ input[type=submit]:hover {
     background-color: #04AA6D;
     overflow: hidden;
     margin: 1em 1em;
+
 }
 
 

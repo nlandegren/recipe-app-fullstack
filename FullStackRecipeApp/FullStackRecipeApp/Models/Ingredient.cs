@@ -31,9 +31,7 @@ namespace FullStackRecipeApp.Models
         [Display(Name = "Dietkategori")]
         public DietCategory DietCategory { get; set; }
         public List<Quantity> Quantities { get; set; }
-
-        
+  
         public string UserID { get; set; }
-        //public IdentityUser User { get; set; }
     }
 }

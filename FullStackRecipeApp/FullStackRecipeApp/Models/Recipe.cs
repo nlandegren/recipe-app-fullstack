@@ -26,8 +26,11 @@ namespace FullStackRecipeApp.Models
 
     public enum CourseCategory
     {
+        [Display(Name = "Förrätt")]
         Starter,
+        [Display(Name = "Huvudrätt")]
         Main,
+        [Display(Name = "Efterrätt")]
         Dessert
     }
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search for recipes and build a three course menu!">
+    <title>Menu Builder 2000</title>
+    <link rel="stylesheet" href="recipe.css">
+    <script src="recipe.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Menu Builder 2000</h1>
+        <h2>Search for recipes and build a three course menu!</h2>
+    </header>
+
+    <main>
+        <form action="" id="search-form">
+            <div id="search-box-container">
+                <input type="text" id="ingredient-search" placeholder="Search by ingredient">
+            </div>
+            <div id="sorting-options">
+                <select name="" id="sorting-select">
+                    <option value="0">Name</option>
+                    <option value="1">Difficulty</option>
+                </select>
+            </div>
+            <div id="diet-options">
+                <select name="dietFilter" id="diet-filter-select">
+                    <option value="0" selected>All</option>
+                    <option value="1">Lacto-ovo</option>
+                    <option value="2">Vegetarian</option>
+                    <option value="3">Carnivore</option>
+                    <option value="4">Pescetarian</option>
+                </select>
+            </div>
+            <div id="course-options">
+                <legend>Filter by course</legend>
+                <label for="starter-course-checkbox">Starter</label>
+                <input type="radio" name="course" value="0" id="starter-course-checkbox" checked>
+                
+                <label for="main-course-checkbox">Main</label>
+                <input type="radio" name="course" value="1" id="main-course-checkbox" >
+
+                <label for="dessert-course-checkbox">Dessert</label>
+                <input type="radio" name="course" value="2" id="dessert-course-checkbox" >
+
+            </div>
+            <input type="submit" value="Search">
+    </form>
+
+    <div id="result-container">
+
+    </div>
+
+    <template>
+        <div class="result-card">
+            <h2>Name</h2>
+            <h3>Description</h3>
+            <button>Add to menu</button>
+        </div>
+    </template>
+
+    <div class="menu">
+        <h1>Your menu</h1>
+        <div class="starter-section">
+            <h2>Starter Dish</h2>
+            <h3></h3>
+            <p class="recipe-description"></p>
+        </div>
+        <div class="main-course-section">
+            <h2>Main Dish</h2>
+            <h3></h3>
+            <p class="recipe-description"></p>
+        </div>
+        <div class="dessert-section">
+            <h2>Dessert Dish</h2>
+            <h3></h3>
+            <p class="recipe-description"></p>
+        </div>
+    </div>
+
+
+    </main>
+
+    <footer>
+        <p>Written by Nils Landegren. 2022.</p>
+    </footer>
+
+
+</body>
+
+</html>

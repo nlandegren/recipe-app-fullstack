@@ -29,6 +29,8 @@
         <select asp-for="Recipe.MealCategory" asp-items="Html.GetEnumSelectList<Models.MealCategory>()">
             <option value="" disabled selected>--Välj kategori--</option>
         </select>
+        <label asp-for="Recipe.CourseCategory">Välj typ av rätt</label>
+        <select asp-for="Recipe.CourseCategory" asp-items="Html.GetEnumSelectList<Models.CourseCategory>()"></select>
         <label asp-for="Recipe.Difficulty">Svårighetsgrad</label>
         <select asp-for="Recipe.Difficulty">
             @for (int i = 1; i < 6; i++)

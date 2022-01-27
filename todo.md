@@ -120,21 +120,41 @@ A page that lets the user create a three course meal by choosing diet option for
 * ~~make default value difficulty 1~~
 
 #### Sample data
-* Set course category on recipes
-* set difficulty on recipes
+* ~~Generate some random plans~~
+* ~~Add Recipes so that we have at least 1 recipe per course category~~
+* ~~set difficulty on recipes~~
+* ~~set course category on recipes~~
+    * add to edit form in pages
 * Add Recipes so that we have at least 1 recipe per difficulty
-* Add Recipes so that we have at least 1 recipe per course category
-* Generate some random plans
+* Add recipe so that we have at least 2 recipe per diet
+* Make sample data where course category is set
 
 ### API
 
-* Make controller to get all recipes and their quantities.
-* Add sorting/filtering/searching to api calls.
+#### Make controller to get all recipes.
+* ~~Get all recipes~~
+* ~~Filter by recipe name keyword.~~
+* ~~Filter by diet~~
+* ~~Filter by course~~
+* ~~Filtered by ingredient search word~~
+* ~~Sort by difficulty~~~
+* ~~Sort by name~~
+
+#### Make controller to get ingredients for a single recipe
 
 ### Frontend
 
-* HTML
-* CSS
+#### HTML
+    * ~~main form for getting recipes~~
+        * ~~change so that course option is radio panel~~
+    * search result template
+        * change so that it only lists recipes of one course type
+    * make a menu section
+    * add to menu button for each search result 
+
+
+
+#### CSS
 * JavaScript
 
 
