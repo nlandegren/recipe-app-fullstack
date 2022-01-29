@@ -20,7 +20,6 @@ namespace FullStackRecipeApp.Pages.MealPlans
             database = context;
             this.AccessControl = accessControl;
         }
-        public bool IsLoggedIn { get; set; }
 
         [BindProperty]
         public MealPlan MealPlan { get; set; }

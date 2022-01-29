@@ -1,9 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.MealPlans.DetailsModel
 
-@{
-    ViewData["Title"] = "Details";
-}
 
 <h1 class="page-headers">@Model.MealPlan.Name | Vecka @Model.MealPlan.WeekNumber</h1>
 
@@ -42,18 +39,10 @@
             <dd>
                 @amount.Value @amount.Key
             </dd>
-            
         }
-
     }
 </dl>
-
 }
-
-
-
-
-
 
 
 @if (Model.AccessControl.IsLoggedIn() && Model.AccessControl.UserHasAccess(Model.MealPlan))

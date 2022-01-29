@@ -1,9 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.UnitsOfMeasurement.DetailsModel
 
-@{
-    ViewData["Title"] = "Details";
-}
 
 <h1>Måttenhet</h1>
 
@@ -25,11 +22,9 @@
         <a asp-page="./Index">Tillbaka till enheter</a>
         <a asp-page="./Edit" asp-route-id="@Model.Unit.ID">Redigera enhet</a>
         <a asp-page="./Delete" asp-route-id="@Model.Unit.ID">Ta bort enhet</a>
-
     }
     else
     {
-
         <a asp-page="./Index">Tillbaka till enheter</a>
     }
 

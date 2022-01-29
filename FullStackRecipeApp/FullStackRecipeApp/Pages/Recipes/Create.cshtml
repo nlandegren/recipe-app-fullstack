@@ -2,11 +2,6 @@
 @model FullStackRecipeApp.Pages.Recipes.CreateModel
 
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-
 <h1 class="page-headers">Skapa nytt recept</h1>
 
 <hr />
@@ -59,8 +54,3 @@
 </div>
 
 
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

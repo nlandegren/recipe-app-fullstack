@@ -79,16 +79,12 @@ namespace FullStackRecipeApp.Pages.Recipes
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
 
-           
 
             RecipeIngredients = await database.Quantity
                 .Include(q => q.Ingredient)
                 .Include(q => q.Measurement)
                 .Where(q => q.RecipeID == id)
-                .ToListAsync();
-                
-
-
+                .ToListAsync();    
 
             // Only let user pick ingredients that are not currently in the recipe.
             var allowedIngredients = await database.Ingredient
@@ -112,8 +108,7 @@ namespace FullStackRecipeApp.Pages.Recipes
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
+
         public async Task<IActionResult> OnPostAsync(Recipe recipe)
         {
             if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Recipe))
@@ -129,23 +124,8 @@ namespace FullStackRecipeApp.Pages.Recipes
                 .Include(q => q.Measurement)
                 .Where(q => q.RecipeID == recipe.ID)
                 .ToListAsync();
-            await SaveRecipe(recipe);
 
-            try
-            {
-                await database.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RecipeExists(Recipe.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await SaveRecipe(recipe);
 
             return RedirectToPage("./Edit", new { id = Recipe.ID });
         }
@@ -167,7 +147,6 @@ namespace FullStackRecipeApp.Pages.Recipes
 
         private async Task<IActionResult> SaveRecipe(Recipe recipe)
         {
-
 
             Recipe = recipe;
 
@@ -217,7 +196,6 @@ namespace FullStackRecipeApp.Pages.Recipes
             }
 
             // If place holder fields are posted then stop.
-            // Tried IValidatableObject on Quantity but causes null reference exception.
             if (NewIngredientID == 0 || NewMeasurementID == 0 || NewAmountID == 0)
             {
                 return RedirectToPage("./Edit", new { id = Recipe.ID });
@@ -256,9 +234,5 @@ namespace FullStackRecipeApp.Pages.Recipes
             return RedirectToPage("./Edit", new { id = Recipe.ID });
         }
 
-        private bool RecipeExists(int id)
-        {
-            return database.Recipe.Any(e => e.ID == id);
-        }
     }
 }

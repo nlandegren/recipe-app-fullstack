@@ -1,9 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.UnitsOfMeasurement.DeleteModel
 
-@{
-    ViewData["Title"] = "Delete";
-}
 
 <h2 class="page-headers">Vill du verkligen ta bort enheten?</h2>
 
@@ -19,7 +16,7 @@
     
 <form method="post" class="edit-form-container">
     <input type="hidden" asp-for="Unit.ID" />
-    <input type="submit" value="Ta bort enheten" class="btn btn-danger" />
+    <input type="submit" value="Ta bort enheten"/>
 </form>
 
 <div class="bottom-buttons">

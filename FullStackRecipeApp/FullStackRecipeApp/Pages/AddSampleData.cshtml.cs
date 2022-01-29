@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
@@ -121,7 +122,7 @@ namespace FullStackRecipeApp.Pages
                     int toSkip = rnd.Next(1, database.Recipe.Count());
                     var recipe = await database.Recipe.Skip(toSkip).FirstAsync();
                     // Weekday random int from 1 to 7
-                    int weekday = rnd.Next(1, 6);
+                    int weekday = rnd.Next(0, 7);
                     var mealPlanRecipe = new RecipeMealPlan
                     {
                         Recipe = recipe,
@@ -171,9 +172,10 @@ namespace FullStackRecipeApp.Pages
         }
 
         public async Task<List<Recipe>> LoadRecipesCSVAsync(string path)
-        {
+        {            
             string[] lines = await System.IO.File.ReadAllLinesAsync(path);
 
+            var rnd = new Random();
 
             var recipesToAdd = new List<Recipe>();
 
@@ -190,9 +192,10 @@ namespace FullStackRecipeApp.Pages
                 {
                     Name = name,
                     Description = description,
-                    Instructions = instructions,
+                    Instructions = InsertNewLines(instructions),
                     MealCategory = mealCategory,
                     CourseCategory = courseCategory,
+                    Difficulty = rnd.Next(1,6),
                     UserID = AccessControl.LoggedInUserID
                 };
                 recipesToAdd.Add(recipe);
@@ -213,6 +216,12 @@ namespace FullStackRecipeApp.Pages
                 unitsToAdd.Add(unit);
             }
             return unitsToAdd;
+        }
+
+
+        public string InsertNewLines(string instructions)
+        {
+            return Regex.Replace(instructions, @"(\d\.)", "\n$1");
         }
     }
 }

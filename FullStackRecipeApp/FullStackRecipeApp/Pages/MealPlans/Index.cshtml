@@ -1,10 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.MealPlans.IndexModel
 
-@{
-    ViewData["Title"] = "Index";
-}
-
 <h1 class="page-headers">Matplaneringar</h1>
 
 
@@ -31,7 +27,7 @@
         </div>
         <div>
             <input type="text" asp-for="SearchTerm" placeholder="Sök" />
-            <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+            <button type="submit" class="search-button">Sök</button>
         </div>
     </div>
 </form>

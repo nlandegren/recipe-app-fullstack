@@ -1,16 +1,15 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.Ingredients.CreateModel
 
-@{
-    ViewData["Title"] = "Create";
-}
 
 
 <h1 class="page-headers">Skapa ny ingrediens</h1>
 
 <hr />
 <form class="edit-form-container" method="post">
+    <input type="hidden" asp-for="Ingredient.UserID" />
     <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="Ingredient.UserID" />
     <label asp-for="Ingredient.Name"></label>
     <input asp-for="Ingredient.Name" />
     <span asp-validation-for="Ingredient.Name"></span>
@@ -28,7 +27,3 @@
 <div class="bottom-buttons">
     <a asp-page="Index">Tillbaka till ingredienser</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

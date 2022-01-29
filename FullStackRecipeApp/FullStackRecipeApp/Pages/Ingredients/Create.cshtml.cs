@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
 
@@ -21,10 +17,9 @@ namespace FullStackRecipeApp.Pages.Ingredients
             this.AccessControl = accessControl;
         }
 
-        public bool IsLoggedIn { get; set; }
         public IActionResult OnGet()
         {
-            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Ingredient))
+            if (!AccessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -34,10 +29,9 @@ namespace FullStackRecipeApp.Pages.Ingredients
         [BindProperty]
         public Ingredient Ingredient { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!AccessControl.IsLoggedIn() || !AccessControl.UserHasAccess(Ingredient))
+            if (!AccessControl.IsLoggedIn())
             {
                 return StatusCode(401, "Oops! You do not have access to this page!");
             }
@@ -46,7 +40,9 @@ namespace FullStackRecipeApp.Pages.Ingredients
                 return Page();
             }
 
+            Ingredient.UserID = AccessControl.LoggedInUserID;
             database.Ingredient.Add(Ingredient);
+
             await database.SaveChangesAsync();
 
             return RedirectToPage("./Index");

@@ -83,8 +83,6 @@ namespace FullStackRecipeApp.Pages.MealPlans
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(MealPlan mealPlan)
         {
             MealPlan = await database.MealPlan
@@ -100,22 +98,6 @@ namespace FullStackRecipeApp.Pages.MealPlans
             {
                 return Page();
 
-            }
-
-            try
-            {
-                await database.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MealPlanExists(MealPlan.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
 
             await SaveMealPlan(mealPlan);
@@ -210,9 +192,5 @@ namespace FullStackRecipeApp.Pages.MealPlans
             return RedirectToPage("./Edit", new { id = MealPlan.ID });
         }
 
-        private bool MealPlanExists(int id)
-        {
-            return database.MealPlan.Any(e => e.ID == id);
-        }
     }
 }

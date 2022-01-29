@@ -1,9 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.Ingredients.DetailsModel
 
-@{
-    ViewData["Title"] = "Details";
-}
 
 <h1 class="page-headers">Detaljer</h1>
 <hr />
@@ -41,7 +38,7 @@
 }
 else
 {
-    <div>
+    <div class="bottom-buttons">
         <a asp-page="./Index">Tillbaka till ingredienser</a>
     </div>
 }

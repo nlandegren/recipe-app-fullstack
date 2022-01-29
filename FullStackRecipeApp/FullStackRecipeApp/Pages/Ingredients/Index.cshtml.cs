@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +42,6 @@ namespace FullStackRecipeApp.Pages.Ingredients
             this.AccessControl = accessControl;
         }
 
-
         public IList<Ingredient> Ingredients { get;set; }
         
         [FromQuery]
@@ -52,8 +50,6 @@ namespace FullStackRecipeApp.Pages.Ingredients
         public FilterKey FilterKey { get; set; }
         [FromQuery]
         public string SearchTerm { get; set; }
-
-
 
         public async Task OnGetAsync()
         {

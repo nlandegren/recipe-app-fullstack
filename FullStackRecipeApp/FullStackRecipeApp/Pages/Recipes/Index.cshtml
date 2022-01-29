@@ -1,9 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.Recipes.IndexModel
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 <h1 class="page-headers">Recept</h1>
 
@@ -14,7 +11,6 @@
         <a asp-page="Create">Skapa nytt recept</a>
     </div>
 }
-
 
 
 <form method="get">
@@ -31,7 +27,7 @@
         </div>
         <div>
             <input type="text" asp-for="SearchTerm" placeholder="Sökord" />
-            <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+            <button type="submit" class="search-button">Sök</button>
         </div>
     </div>
 

@@ -1,10 +1,9 @@
 ﻿/* Add a black background color to the top navigation */
 
-header, body, footer {
+body{
     margin: 1em;
-    margin-left: 5em;
-    margin-right: 5em;
-    
+    margin-left: 30em;
+    margin-right: 30em;
 }
 
 .topnav {
@@ -28,6 +27,7 @@ input[type=text], select, input[type=submit], textarea {
 
 
 .search-button {
+
     background: #04AA6D;
     font-size: 17px;
     border: none;
@@ -35,6 +35,7 @@ input[type=text], select, input[type=submit], textarea {
     padding: 12px 20px;
     cursor: pointer;
     border-radius:2px;
+    margin: 1em;
 }
 
 input[type=submit]:hover {
@@ -58,13 +59,17 @@ input[type=submit]:hover {
     margin: 1em 0;
 }
 
-.listing-options div {
-    display: flex;
-    align-items: center;
-    justify-content:center;    
-    font-size: 17px;
-    width:100%;
-}
+    .listing-options div {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        font-size: 17px;
+        flex: 1;
+    }
+    
+    .listing-options div *{
+        width:100%;
+    }
 
 
 
@@ -104,8 +109,9 @@ input[type=submit]:hover {
 
 .frontpage-grid{
     display:flex;
-    margin-top:20em;
-    margin-bottom:20em;
+    margin-top:10em;
+    margin-bottom:10em;
+
 }
 
 #website-title-container {
@@ -292,20 +298,16 @@ dd {
 /* bottom nav bar */
 
 .bottom-buttons {
-    /*
-    overflow: hidden;
-    position: fixed;
-    bottom: 0;*/
-    background-color: black;
+    background-color: #333;
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
     margin-top: 1em;
     margin-bottom: 1em;
 }
 
 .bottom-buttons a {
+    flex: 1;
     float: left;
     display: block;
     color: #f2f2f2;
@@ -361,13 +363,6 @@ dd {
 
 
 
-/* Options above all the lists */
-
-
-
-/* Create new */
-
-
 /* Change the color of links on hover */
 .topnav a:hover, .topnav label:hover {
     background-color: #ddd;
@@ -387,19 +382,60 @@ dd {
 }
 
 
-/* Make other pages also responsive */
+
+footer p{
+    text-align: center;
+}
 
 
-/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+
+@media screen and (max-width: 1600px) {
+
+    body {
+        margin-left: 15em;
+        margin-right: 15em;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    body {
+        margin-left: 5em;
+        margin-right: 5em;
+    }
+    .bottom-buttons {
+        flex-direction: column;
+        background-color: white;
+    }
+
+    .bottom-buttons a {
+        margin-bottom: 0.5em;
+        background-color: #333;
+    }
+}
+
 @media screen and (max-width: 900px) {
-
 
     .listing-options {
         flex-direction: column;
     }
 
+}
+
+
+@media screen and (max-width: 700px) {
+
+    body {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    .recipe-title {
+        margin-left:1em;
+        margin-right:1em;
+    }
+
     .frontpage-grid {
-        flex-direction:column;
+        flex-direction: column;
     }
 
     #website-title-container {
@@ -410,7 +446,7 @@ dd {
         text-align: center;
     }
 
-    .topnav a:not(:first-child), .topnav label{
+    .topnav a:not(:first-child), .topnav label {
         display: none;
     }
 
@@ -418,27 +454,27 @@ dd {
         float: right;
         display: block;
     }
-}
 
-/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
-@media screen and (max-width: 900px) {
-
-    
     .topnav.responsive {
         position: relative;
     }
 
-        .topnav.responsive a.icon {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
+    .topnav.responsive a.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
 
-        .topnav.responsive a, .topnav.responsive label{
-            float: none;
-            display: block;
-            text-align: left;
-        }
+    .topnav.responsive a, .topnav.responsive label {
+        float: none;
+        display: block;
+        text-align: left;
+    }
 }
+
+
+
+    
+
 
 

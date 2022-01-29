@@ -1,12 +1,7 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.MealPlans.EditModel
 
-@{
-    ViewData["Title"] = "Edit";
-}
-
 <h1 class="page-headers">Redigera matplanering</h1>
-
 
 <hr />
 <form method="post">
@@ -24,9 +19,7 @@
             <input asp-for="MealPlan.WeekNumber" />
             <span asp-validation-for="MealPlan.WeekNumber"></span>
         </div>
-
     </div>
-
 
     <hr />
 
@@ -80,11 +73,8 @@
 
                 </select>
                 <input type="submit" asp-page-handler="delete" asp-route-recipeMealPlanID="@meal.ID" value="Ta bort" />
-                @*<button asp-page-handler="delete" asp-route-recipeMealPlanID="@meal.ID"> Ta bort</button>*@
             </div>
         }
-
-
 
         <div>
             <input type="submit" value="Spara planering" />
@@ -98,7 +88,3 @@
 <div class="bottom-buttons">
     <a asp-page="./Index">Tillbaka till planeringar</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

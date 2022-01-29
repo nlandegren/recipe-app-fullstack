@@ -1,18 +1,13 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.MealPlans.DeleteModel
 
-@{
-    ViewData["Title"] = "Delete";
-}
 
 <h1 class="page-headers">@Model.MealPlan.Name | Vecka @Model.MealPlan.WeekNumber</h1>
 
 
 <div>
-
     <div>
         <hr />
-
 
         @foreach (var day in Model.WeekDays)
         {
@@ -32,26 +27,13 @@
             </dl>
         }
 
-
-        @*@foreach (var meal in Model.MealPlan.Meals)
-        {
-
-            <dl>
-                <dt>
-                    @meal.WeekDay
-                </dt>
-                <dd>
-                    <a asp-page="../Recipes/Details" asp-route-id="@meal.RecipeID">@meal.Recipe.Name</a>
-                </dd>
-            </dl>
-        }*@
     </div>
 
     <h2 class="page-headers">Vill du verkligen ta bort planeringen?</h2>
 
     <form method="post" class="edit-form-container">
         <input type="hidden" asp-for="MealPlan.ID" />
-        <input type="submit" value="Ta bort planering" class="btn btn-danger" />
+        <input type="submit" value="Ta bort planering" />
     </form>
 
     <div class="bottom-buttons">

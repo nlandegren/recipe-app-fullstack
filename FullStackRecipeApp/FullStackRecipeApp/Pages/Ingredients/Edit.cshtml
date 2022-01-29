@@ -1,21 +1,19 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.Ingredients.EditModel
 
-@{
-    ViewData["Title"] = "Edit";
-}
-
 <h1 class="page-headers">Redigera ingrediens</h1>
 
 <hr />
 <div>
     <div class="edit-form-container">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Ingredient.UserID" />
+
+            <div asp-validation-summary="ModelOnly"></div>
             <input type="hidden" asp-for="Ingredient.ID" />
             <div>
                 <label asp-for="Ingredient.Name"></label>
-                <input asp-for="Ingredient.Name"/>
+                <input asp-for="Ingredient.Name" />
                 <span asp-validation-for="Ingredient.Name"></span>
             </div>
             <div class="form-group">
@@ -24,12 +22,12 @@
                 <span asp-validation-for="Ingredient.FoodCategory"></span>
             </div>
             <div>
-                <label asp-for="Ingredient.DietCategory">Diet-kategori</label>
-                <input asp-for="Ingredient.DietCategory" />
-                <span asp-validation-for="Ingredient.DietCategory"></span>
+                <label asp-for="Ingredient.DietCategory">Dietkategori: </label>
+                <select asp-for="Ingredient.DietCategory" asp-items="Html.GetEnumSelectList<Models.DietCategory>()">
+                </select>
             </div>
             <div>
-                <input type="submit" value="Spara"/>
+                <input type="submit" value="Spara" />
             </div>
         </form>
     </div>
@@ -38,7 +36,3 @@
 <div class="bottom-buttons">
     <a asp-page="./Index">Tillbaka till alla ingredienser</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

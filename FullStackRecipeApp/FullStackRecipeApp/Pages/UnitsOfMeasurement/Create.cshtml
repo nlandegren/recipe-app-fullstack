@@ -1,18 +1,15 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.UnitsOfMeasurement.CreateModel
 
-@{
-    ViewData["Title"] = "Create";
-}
 
 <h1 class="page-headers">Lägg till ny enhet</h1>
 <hr />
     <form method="post" class="edit-form-container">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <label asp-for="Unit.Name" class="control-label"></label>
-            <input asp-for="Unit.Name" class="form-control" />
-            <span asp-validation-for="Unit.Name" class="text-danger"></span>
-            <input type="submit" value="Create" class="btn btn-primary" />
+        <div asp-validation-summary="ModelOnly"></div>
+            <label asp-for="Unit.Name"></label>
+            <input asp-for="Unit.Name"/>
+            <span asp-validation-for="Unit.Name"></span>
+            <input type="submit" value="Skapa enhet" />
             <div asp-validation-summary="All"></div>
     </form>
 
@@ -20,7 +17,3 @@
 <div class="bottom-buttons">
     <a asp-page="Index">Tillbaka till enheter</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -1,25 +1,22 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.Ingredients.DeleteModel
 
-@{
-    ViewData["Title"] = "Delete";
-}
 
 <h1 class="page-headers">Ta bort ingrediensen?</h1>
 
 <div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
+    <dl>
+        <dt>
             @Html.DisplayNameFor(model => model.Ingredient.Name)
         </dt>
-        <dd class="col-sm-10">
+        <dd>
             @Html.DisplayFor(model => model.Ingredient.Name)
         </dd>
-        <dt class="col-sm-2">
+        <dt>
             @Html.DisplayNameFor(model => model.Ingredient.FoodCategory)
         </dt>
-        <dd class="col-sm-10">
+        <dd>
             @Html.DisplayFor(model => model.Ingredient.FoodCategory)
         </dd>
     </dl>
@@ -27,7 +24,9 @@
 
     <form method="post" class="edit-form-container">
         <input type="hidden" asp-for="Ingredient.ID" />
-        <input type="submit" value="Ta bort ingrediens" class="btn btn-danger" />
+        <input type="hidden" asp-for="Ingredient.UserID" />
+
+        <input type="submit" value="Ta bort ingrediens" />
     </form>
     <div class="bottom-buttons">
         <a asp-page="./Index">Tillbaka till ingredienser</a>

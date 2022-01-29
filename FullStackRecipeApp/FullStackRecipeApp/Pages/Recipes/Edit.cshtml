@@ -1,9 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.Recipes.EditModel
 
-@{
-    ViewData["Title"] = "Edit";
-}
 
 <h1 class="page-headers">Redigera recept</h1>
 
@@ -71,16 +68,16 @@
 
     @foreach (var recipeIngredient in Model.RecipeIngredients)
     {
-<div class="ingredient-div">
-    <select name="SelectedIngredientIDs" asp-items="Model.IngredientOptions">
-        <option value="@recipeIngredient.Ingredient.ID" selected>@recipeIngredient.Ingredient.Name</option>
-    </select>
-    <select name="SelectedMeasurementIDs" asp-items="Model.MeasurementOptions">
-        <option value="@recipeIngredient.Measurement.ID" selected>@recipeIngredient.Measurement.Name</option>
-    </select>
-    <input class="edit-input" name="SelectedAmounts" asp-for="Quantity.Amount" value="@recipeIngredient.Amount" />
-    <input type="submit"  value="Ta bort" asp-page-handler="delete" asp-route-recipeID="@Model.Recipe.ID" asp-route-ingredientID="@recipeIngredient.IngredientID"/>
-</div>
+        <div class="ingredient-div">
+            <select name="SelectedIngredientIDs" asp-items="Model.IngredientOptions">
+                <option value="@recipeIngredient.Ingredient.ID" selected>@recipeIngredient.Ingredient.Name</option>
+            </select>
+            <select name="SelectedMeasurementIDs" asp-items="Model.MeasurementOptions">
+                <option value="@recipeIngredient.Measurement.ID" selected>@recipeIngredient.Measurement.Name</option>
+            </select>
+            <input class="edit-input" name="SelectedAmounts" asp-for="Quantity.Amount" value="@recipeIngredient.Amount" />
+            <input type="submit"  value="Ta bort" asp-page-handler="delete" asp-route-recipeID="@Model.Recipe.ID" asp-route-ingredientID="@recipeIngredient.IngredientID"/>
+        </div>
     }
 
     <div class="edit-form-container">
@@ -90,18 +87,7 @@
 </form>
 
 
-
-
-
-
-
-
-
-
 <div class="bottom-buttons">
     <a asp-page="./Index">Tillbaka till alla recept</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

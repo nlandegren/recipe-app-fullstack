@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
 
@@ -33,7 +29,6 @@ namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
         [BindProperty]
         public Unit Unit { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!AccessControl.IsLoggedIn())
@@ -44,6 +39,8 @@ namespace FullStackRecipeApp.Pages.UnitsOfMeasurement
             {
                 return Page();
             }
+
+            Unit.UserID = AccessControl.LoggedInUserID;
 
             database.Unit.Add(Unit);
             await database.SaveChangesAsync();

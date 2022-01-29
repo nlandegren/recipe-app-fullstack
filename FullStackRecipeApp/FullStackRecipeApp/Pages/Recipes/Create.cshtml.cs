@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using FullStackRecipeApp.Data;
 using FullStackRecipeApp.Models;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace FullStackRecipeApp.Pages.Recipes
 {
@@ -37,12 +31,8 @@ namespace FullStackRecipeApp.Pages.Recipes
             this.accessControl = accessControl;
         }
 
-        public bool IsLoggedIn { get; set; }
-
         [BindProperty]
         public Recipe Recipe { get; set; }
-
-
         private void CreateEmptyRecipe()
         {
             Recipe = new Recipe
@@ -63,7 +53,6 @@ namespace FullStackRecipeApp.Pages.Recipes
             return Page();
         }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync(Recipe recipe)
         {
             CreateEmptyRecipe();

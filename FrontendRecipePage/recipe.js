@@ -17,9 +17,6 @@ resultCardTemplate.remove();
 let ingredientSearch;
 let dietFilter, courseFilter;
 let sortingKey;
-let params;
-let limit = 4;
-let recipes;
 let sortByName, sortByDifficulty;
 
 searchForm.onsubmit = async event => {
@@ -42,8 +39,9 @@ searchForm.onsubmit = async event => {
         resultContainer.removeChild(resultContainer.lastChild);
       }
 
+
     // Make api call for recipes.
-    recipes = await getRecipes();
+    let recipes = await getRecipes();
     displayRecipes(recipes); 
 }
 
@@ -51,8 +49,9 @@ function displayRecipes(recipes){
     for (const recipe of recipes) {
         // Clone html div for recipe result info.
         let section = resultCard.cloneNode(true);
-        section.querySelector('h2').textContent = recipe.name;
-        section.querySelector('h3').textContent = recipe.description;
+        section.querySelector('h3').textContent = recipe.name;
+        section.querySelector('p').textContent = recipe.description;
+        section.querySelector('span').textContent = "Svårighetsgrad: " + recipe.difficulty + "/5";        
         section.querySelector('button').onclick = async event => {
             
             if(recipe.courseCategory == 0){
@@ -75,7 +74,7 @@ function addToMenu(recipe, section){
 }
 
 async function getRecipes(){
-    params = new URLSearchParams({
+    let params = new URLSearchParams({
         diet: dietFilter,
         course: courseFilter,
         ingredient: ingredientSearch,

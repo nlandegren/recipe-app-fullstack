@@ -1,11 +1,6 @@
 ﻿@page
 @model FullStackRecipeApp.Pages.MealPlans.CreateModel
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-
 
 <h1 class="page-headers">Skapa ny veckomatsedel</h1>
 <hr />
@@ -26,6 +21,3 @@
     <a asp-page="Index">Tillbaka till planeringar</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

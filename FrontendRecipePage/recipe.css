@@ -2,9 +2,170 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    border: solid 1px red;
 }
 
-div {
-    border: solid 1px green;
+
+body {
+    background-color: aliceblue;
+    margin-left: 25em;
+    margin-right: 25em    
+}
+
+body > * {
+    margin-top: 2em;
+}
+
+header {
+    text-align: center;
+    background-color: #333;
+    color: white;
+    padding: 0.2em;
+}
+
+#main-grid {
+    display: flex;
+    flex-direction: row;
+    background-color: #00A170;
+    padding: 0.5em;
+    margin-top: 0.5em;
+}
+
+
+#result-container{
+    flex: 1;
+    margin: inherit;
+    min-height: 50em;
+    background-color: white;
+    border-radius: 2%;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+#result-container h1{
+    text-align: center;
+    color: black;
+}
+
+
+
+.menu {
+    flex: 1;
+    margin: inherit;
+    background-color: beige;
+    border-radius: 2%;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.menu h1 {
+    text-align: center;
+}
+
+.menu h2 {
+    text-align: center;
+}
+
+.menu div, .result-card {
+    background-color: white;
+    border: 1px solid black;
+    padding: 1em;
+    margin: 0.5em;
+    min-height: 7em;
+}
+
+.result-card *{
+    margin: 0.2em;
+}
+
+
+#search-form {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #00A170;
+    padding: 0.2em;
+}
+
+#search-form div *{
+    padding: 0.3em;
+}
+
+
+#search-form label{
+    
+    color: white;
+}
+
+#course-options label{
+    display: inline;
+    background-color: white;
+    border:1px solid #333;
+    color: black;
+}
+
+
+#course-options input:checked + label{
+    color: white;
+    background-color: #333;
+}
+
+footer {
+    text-align: center;
+}
+
+
+
+
+@media screen and (max-width: 1500px){
+    
+    body {
+        margin-left: 15em;
+        margin-right: 15em;        
+    }
+}
+
+@media screen and (max-width: 1200px){
+    
+    body {
+        margin-left: 7.5em;
+        margin-right: 7.5em;        
+    }
+}
+
+
+@media screen and (max-width: 900px){
+
+    body {
+        margin-left: 1em;
+        margin-right: 1em;        
+    }
+    #main-grid{
+        flex-direction: column;
+    }
+}
+
+
+@media screen and (max-width: 715px){
+
+    #search-form{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #search-form div {
+        justify-content: center;
+        align-items: stretch;
+        margin: 0.5em;
+    }
+
+    #course-options{
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    #search-form div *{
+        width: 100%;        
+    }
+
+
 }
