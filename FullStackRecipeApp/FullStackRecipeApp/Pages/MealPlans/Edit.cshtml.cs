@@ -147,7 +147,7 @@ namespace FullStackRecipeApp.Pages.MealPlans
             }
 
             // If place holder fields are posted then stop.
-            if (NewWeekDayID == 0 || NewRecipeID == 0)
+            if (NewWeekDayID == -1 || NewRecipeID == -1)
             {
                 return RedirectToPage("./Edit", new { id = MealPlan.ID });
             }
