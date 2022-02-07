@@ -7,9 +7,10 @@
 <hr />
 
 <form method="post" class="edit-form-container">
+    <div asp-validation-summary="ModelOnly"></div>
+
     <input type="hidden" asp-for="Recipe.UserID" />
 
-    <div asp-validation-summary="ModelOnly"></div>
     <label asp-for="Recipe.Name">Namn: </label>
     <input asp-for="Recipe.Name" />
     <span asp-validation-for="Recipe.Name"></span>
@@ -41,11 +42,11 @@
 
         }
     </select>
+    <span asp-validation-for="Recipe.Difficulty"></span>
 
     <div id="submit-button-container">
         <input type="submit" value="Skapa recept" />
     </div>
-    <div asp-validation-summary="All"></div>
 </form>
 
 
