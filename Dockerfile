@@ -2,7 +2,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 
 #Går in i “/app”-mappen i sitt arbete att skapa din Docker-image (som sedan används för din container)
-WORKDIR /FullStackRecipeApp
 
 #Öppnar upp en port i containern så att den går att nå utifrån containern
 EXPOSE 8080
@@ -11,10 +10,9 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 #Går in i “/app”-mappen i sitt arbete att skapa din Docker-image (som sedan används för din container)
-WORKDIR /FullStackRecipeApp
 
 #kopierar din cs-projektfil (med namnet på ditt projekt) till sin root folder ( “./” ) i den blivande Docker-imagen
-COPY FullStackRecipeApp.csproj ./
+COPY /FullStackRecipeApp/FullStackRecipeApp.csproj ./
 
 # Kör dotnet-kommandot “restore”
 RUN dotnet restore
@@ -23,7 +21,8 @@ RUN dotnet restore
 COPY . ./
 
 #Går in i mappen “/app” för sina nästkommande steg i Docker-miljön
-WORKDIR /FullStackRecipeApp
+
+
 RUN dotnet build -c Release -o /FullStackRecipeApp/build
 
 # Använder den tidigare miljön “build” som vi satte upp ovan från “dotnet sdk” och sätter den som variabeln publish
@@ -41,7 +40,6 @@ FROM base AS final
 
 #Går in i mappen “/app” för sina nästkommande steg i Docker-miljön och kopierar in innehållet 
 
-WORKDIR /FullStackRecipeApp
 COPY --from=publish /FullStackRecipeApp/publish .
 
 # Berättar för den framtida Docker-containern vilken startfil/startväg den ska initiera och köra först vid container-starten när väl Docker eller Kubernetes kallar på den
