@@ -36,12 +36,31 @@ jobs:
           push: true
           tags: nlandegren/production:FromActions
 
-#   Not sure if needed
-#      - name: Publish
-#        run: dotnet publish FullStackRecipeApp/FullStackRecipeApp.csproj -c Release -o website
-#      - name: Upload Artifact
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: app
-#          path: website/**
-#          if-no-files-found: error
+      - name: Install Open VPN
+        run: |
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
+
+      - name: Connect to VPN
+        id: connect_vpn
+        uses: "kota65535/github-openvpn-connect-action@v1"
+        with:
+          config_file: ./.github/vpn/config.ovpn
+          username:  ${{ secrets.OVPN_USERNAME}}
+          password: ${{ secrets.OPEN_VPN_PASSWORD}}
+          client_key: ${{ secrets.OPEN_VPN_PRIVATE_KEY}}          
+
+
+  build:
+    name: Build
+   runs-on: ubuntu-latest 
+    steps:
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: kubectl rollout restart deployment recipe-app
+
