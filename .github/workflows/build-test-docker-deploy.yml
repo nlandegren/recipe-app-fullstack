@@ -46,9 +46,12 @@ jobs:
         uses: "kota65535/github-openvpn-connect-action@v1"
         with:
           config_file: ./.github/vpn/config.ovpn
-          username:  ${{ secrets.OVPN_USERNAME}}
-          password: ${{ secrets.OPEN_VPN_PASSWORD}}
-          client_key: ${{ secrets.OPEN_VPN_PRIVATE_KEY}}          
+          username:  ${{ secrets.OVPN_USERNAME }}
+          password: ${{ secrets.OPEN_VPN_PASSWORD }}
+          client_key: ${{ secrets.OPEN_VPN_PRIVATE_KEY }}          
+
+      - name: Check Connect VPN
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
