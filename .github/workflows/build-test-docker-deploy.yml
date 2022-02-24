@@ -38,11 +38,17 @@ jobs:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
             password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build the Docker Image and push to Docker Hub
-        uses: docker/build-push-action@v2.9.0
-        with:
-          push: true
-          tags: nlandegren/production:FromActions
+            #- name: Build the Docker Image and push to Docker Hub
+            #uses: docker/build-push-action@v2.9.0
+            #with:
+            #push: true
+            #tags: nlandegren/production:FromActions
+
+      - name: Build the docker image
+        run: docker build -t nlandegren/production:FromActions-$RELEASE_VERSION .
+
+      - name: Push the docker image
+        run: docker push nlandegren/production:FromActions-$RELEASE_VERSION
 
       - name: Install Open VPN
         run: |
