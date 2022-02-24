@@ -15,7 +15,8 @@ jobs:
 
       - name: Set version label
         run: echo "RELEASE_VERSION=$(echo ${GIT_MESSAGE} | grep -Po '(?<=--version=)[^;]+')" >> $GITHUB_ENV
-        env: GIT_MESSAGE: ${{github.event.head_commit.message}}
+        env:
+          GIT_MESSAGE: ${{github.event.head_commit.message}}
 
       - name: Test version label
         run: echo $RELEASE_VERSION
