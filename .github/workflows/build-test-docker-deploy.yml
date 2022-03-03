@@ -45,10 +45,10 @@ jobs:
             #tags: nlandegren/production:FromActions
 
       - name: Build the docker image
-        run: docker build -t nlandegren/production:$RELEASE_VERSION .
+        run: docker build -t nlandegren/production$RELEASE_VERSION .
 
       - name: Push the docker image
-        run: docker push nlandegren/production:$RELEASE_VERSION
+        run: docker push nlandegren/production$RELEASE_VERSION
 
       - name: Install Open VPN
         run: |
