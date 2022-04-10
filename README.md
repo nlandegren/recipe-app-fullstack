@@ -4,6 +4,8 @@ This project is the result of a course in web development backend, which was one
 
 The app is implemented in ASP.NET Core using Razor pages. With the app I included an API that gives access to a subset of the database.
 
+## Front page
+![alt text](images/frontpage.png)
 
-
-
+## Responsive front page
+![alt text](images/res)
