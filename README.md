@@ -2,9 +2,9 @@
 
 A web application used to create and manage food recipes as well as creating weekly meal plans.
 
-The project is the result of a course in web development backend, which was one of the courses in my two-year programme in .NET development. I built this app as part of an assignment in which I was supposed to leverage most of what I had learnt in previous courses, including programming in C#, building databases with T-SQL, modeling databases with Entity Framework Core, basic frontend web development with HTML, CSS, and JavaScript, and as part of a course in Cloud Development I also set up a CI/CD pipepline from my local machine to an Azure virtual machine. With github actions the application is automatically built, tested, containerized with docker, and shipped to my virtual machine on wich I run the app on a Kubernetes cluster.
-
 The app is implemented in ASP.NET Core using Razor pages. I implemented account authorized CRUD operations for each of the categories Recipes, Meal Plans, Ingredients, and Measurement Units. As part of the assignment I also built an API that gives access to a subset of the database. 
+
+The project is the result of a course in web development backend, which was one of the courses in my two-year programme in .NET development. I built this app as part of an assignment in which I was supposed to leverage most of what I had learnt in previous courses, including programming in C#, building databases with T-SQL, modeling databases with Entity Framework Core, basic frontend web development with HTML, CSS, and JavaScript, and as part of a course in Cloud Development I also set up a CI/CD pipepline from my local machine to an Azure virtual machine. With github actions the application is automatically built, tested, containerized with docker, and shipped to my virtual machine on wich I run the app on a Kubernetes cluster.
 
 ## Contents
 1. [Main app](#main-app)    
